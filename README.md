@@ -4,7 +4,7 @@
 
 To build, run the following commands from the main folder `Framework`:
 ```
-cmake -S . -B build
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
 
