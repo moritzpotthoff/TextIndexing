@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "SuffixTree/SuffixTree.h"
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cout << "Wrong number of arguments, expecting 2 arguments." << std::endl;
@@ -25,8 +27,10 @@ int main(int argc, char *argv[]) {
 
     if (queryChoice.compare("topk") == 0) {
         std::cout << "Requested topk query." << std::endl;
+        SuffixTree::SuffixTree<uint8_t> stree(queryChoice);
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
+        SuffixTree::SuffixTree<uint8_t> stree(queryChoice);
     } else {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
