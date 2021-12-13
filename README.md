@@ -10,5 +10,5 @@ cmake --build build
 
 Run the program using 
 ```
-./build/Framework
+./build/Framework [topk|repeat] path_to_input_file
 ```
