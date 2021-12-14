@@ -9,7 +9,7 @@ namespace SuffixTree {
         using CharType = CHAR_TYPE;
 
     public:
-        Node(Node *parent = NULL, int startIndex = 0, int endIndex = 0, Node *suffixLink = NULL) :
+        Node(Node<CharType>* parent = NULL, int startIndex = 0, int endIndex = 0, Node<CharType>* suffixLink = NULL) :
                 parent(parent),
                 startIndex(startIndex),
                 endIndex(endIndex),
@@ -17,7 +17,7 @@ namespace SuffixTree {
         }
 
         inline int getActivePointIndex(CharType activeEdge, int activeLength) {
-            Node* targetChild = children[activeEdge];
+            Node<CharType>* targetChild = children[activeEdge];
             return targetChild->getTextIndex(activeLength);
         }
 
@@ -26,11 +26,11 @@ namespace SuffixTree {
             return startIndex + offset;
         }
 
-        inline Node* splitEdge(CharType activeEdge, int activeLength, CharType previousActivePointCharacter, CharType newCharacter) {
-            Node* splitterNode = new Node(this, startIndex, startIndex + activeLength, NULL);
-            splitterNode.addChild(previousActivePointCharacter, children[activeEdge]);
-            Node* leafNode = new Node(splitterNode, startIndex + activeLength, startIndex + activeLength + 1, NULL);
-            splitterNode.addChild(newCharacter, &leafNode)
+        inline Node<CharType>* splitEdge(CharType activeEdge, int activeLength, CharType previousActivePointCharacter, CharType newCharacter) {
+            Node<CharType>* splitterNode = new Node(this, startIndex, startIndex + activeLength, NULL);
+            splitterNode->addChild(previousActivePointCharacter, children[activeEdge]);
+            Node<CharType>* leafNode = new Node(splitterNode, startIndex + activeLength, startIndex + activeLength + 1, NULL);
+            splitterNode->addChild(newCharacter, leafNode);
             children[activeEdge] = splitterNode;
             return splitterNode;
         }
@@ -40,11 +40,15 @@ namespace SuffixTree {
             children[key] = value;
         }
 
+        inline Node<CharType>* getChild(CharType key) {
+            return children[key];
+        }
+
         inline void setParent(Node* newParent) {
             parent = newParent;
         }
 
-        inline Node* getSuffixLink() {
+        inline Node<CharType>* getSuffixLink() {
             return suffixLink;
         }
 
@@ -52,12 +56,16 @@ namespace SuffixTree {
             suffixLink = newSuffixLink;
         }
 
+        inline int getEndIndex() {
+            return endIndex;
+        }
+
     private:
-        Node* parent;
+        Node<CharType>* parent;
         int startIndex;//inclusive
         int endIndex;//exclusive
-        Node* suffixLink;
-        std::map<CharType, Node*> children;
+        Node<CharType>* suffixLink;
+        std::map<CharType, Node<CharType>*> children;
     };
 
 }

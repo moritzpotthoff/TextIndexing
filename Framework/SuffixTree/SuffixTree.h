@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <bits/stdc++.h>
 
 #include "Node.h"
 
@@ -13,18 +14,19 @@ namespace SuffixTree {
         static const CharType NoEdge = 255;//TODO fix
 
     public:
-        SuffixTree(std::string input) :
-            root(NULL, 0, CurrentEnd, NULL),
+        SuffixTree(const CharType* input, int n) :
+            text(input),
+            root(NULL, 0, CurrentEndFlag, NULL),
             currentEnd(0),
-            activeNode(root),
+            activeNode(&root),
             activeEdge(NoEdge),
             activeLength(0),
             remainder(1),
-            n(0) {//TODO fix n
-            std::cout << "Created new suffix tree for " << input << std::endl;
+            n(n) {
+            std::cout << "Created new suffix tree." << std::endl;
 
             //iterate over the input, for each new character, add the necessary suffixes in the new phase
-            for (int i = 1; i < n; i++) {
+            for (int i = 0; i < n; i++) {
                 singlePhase(i);
             }
         }
@@ -50,9 +52,11 @@ namespace SuffixTree {
             /* By design, the path for the current suffix ends at the active-Triple.
              * Go there and see if anything needs to be added.
              **/
-            CharType newCharacter = inputText[activePointIndex];
+            AssertMsg(extensionEndIndex < n, "Accessed beyond text limit.");
+            CharType newCharacter = text[extensionEndIndex];
             int activePointIndex = activeNode->getActivePointIndex(activeEdge, activeLength);
-            CharType activePointCharacter = inputText[activePointIndex];
+            AssertMsg(activePointIndex < n, "Accessed beyond text limit.");
+            CharType activePointCharacter = text[activePointIndex];
 
             if (activePointCharacter == newCharacter) {
                 //Suffix is implicitly represented by the active edge, nothing to do.
@@ -60,22 +64,24 @@ namespace SuffixTree {
                 activeLength++;
                 if (activeLength == activeNode->getEndIndex()) {
                     //Update active node because we currently point behind it.
-                    //TODO
+                    activeNode = activeNode->getChild(activeEdge);
+                    activeLength = 0;
+                    activeEdge = newCharacter;//TODO check that this is the correct new character.
                 }
             } else {
                 //The new character is not present, we need to split the edge accordingly.
-                Node* insertedNode = activeNode->splitEdge(activeEdge, activeLength, activePointCharacter, newCharacter);
+                Node<CharType>* insertedNode = activeNode->splitEdge(activeEdge, activeLength, activePointCharacter, newCharacter);
                 if (lastInsertedNode != NULL) {
                     //Rule 2 [reddit]: We need to add the suffix link from the lastInsertedNode to the currently insertedNode.
                     lastInsertedNode->addSuffixLink(insertedNode);
                 }
                 remainder--;
                 //Update the active point.
-                if (activeNode == root) {
+                if (activeNode == &root) {
                     //Rule 1 [reddit].
                     //activeNode remains unchanged
                     activeLength--;
-                    activeEdge = ??;//TODO
+                    //activeEdge = ??;//TODO
                 } else {
                     //Rule 3 [reddit]
                     activeNode = activeNode->getSuffixLink();
@@ -88,14 +94,15 @@ namespace SuffixTree {
         }
 
     private:
+        const   CharType* text;
         Node<CharType> root;
         int currentEnd;
-        Node* activeNode;
+        Node<CharType>* activeNode;
         CharType activeEdge;
         int activeLength;
         int remainder;
         int n;//input length
-        Node* lastInsertedNode;
+        Node<CharType>* lastInsertedNode;
     };
 
 }
