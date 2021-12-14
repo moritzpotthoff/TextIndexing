@@ -1,6 +1,1 @@
-3
-4 3
-5 1
-2 2
-Dies ist ein Beispiel
-Beispiel Text.
+abcabx

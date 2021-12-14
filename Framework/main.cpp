@@ -12,10 +12,13 @@ int main(int argc, char *argv[]) {
     std::string queryChoice(argv[1]);
     std::string inputFileName(argv[2]);
 
-    std::ifstream inputFile;
-    std::string inputText((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
-    std::cout << "Read input file: " << inputText << std::endl;
+    std::ifstream inputFile(inputFileName);
 
+
+    std::stringstream inputBuffer;
+    inputBuffer << inputFile.rdbuf();
+    std::string inputText = inputBuffer.str();
+    std::cout << "Read input file: " << inputText << std::endl;
     /*
     inputFile.open(inputFileName);
     if (!inputFile.is_open()) {
@@ -32,10 +35,10 @@ int main(int argc, char *argv[]) {
 
     if (queryChoice.compare("topk") == 0) {
         std::cout << "Requested topk query." << std::endl;
-        SuffixTree::SuffixTree<char> stree(inputText.c_str(), inputText.length());
+        SuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
-        SuffixTree::SuffixTree<char> stree(inputText.c_str(), inputText.length());
+        SuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
