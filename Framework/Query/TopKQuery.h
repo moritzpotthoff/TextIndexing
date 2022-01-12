@@ -18,13 +18,13 @@ namespace Query {
             tree(tree) {
             //precompute number of leaves under each node.
             countNumberOfLeaves();
-            tree->root.print(4);
+            if constexpr (Debug) tree->root.print(4);
         }
 
-        inline void runQuery(size_t newL, size_t newK) noexcept {
+        inline size_t runQuery(size_t newL, size_t newK) noexcept {
             l = newL;
             k = newK;
-            std::cout << "Running topk query with l = " << l << " and k = " << k << std::endl;
+            if constexpr (Debug) std::cout << "Running topk query with l = " << l << " and k = " << k << std::endl;
             //collect all relevant pairs of #occurences and suffix start
             std::vector<std::pair<size_t, size_t>> candidates;
             candidates.reserve(tree->n / 2);
@@ -34,16 +34,19 @@ namespace Query {
             std::stable_sort(candidates.begin(), candidates.end(), [](const std::pair<size_t, size_t>& left, const std::pair<size_t, size_t>& right){
                 return left.first > right.first;
             });
-            std::cout << "Found sorted candidates: " << std::endl;
-            for (auto & candidate : candidates) {
-                std::cout << "Start index: " << candidate.second << ", #occ. = " << candidate.first << std::endl;
+            if constexpr (Debug) {
+                std::cout << "Found sorted candidates: " << std::endl;
+                for (auto &candidate : candidates) {
+                    std::cout << "Start index: " << candidate.second << ", #occ. = " << candidate.first << std::endl;
+                }
             }
             //finally, select the k-th element
             std::pair<size_t, size_t>& solution = candidates[k - 1];
             //reconstruct the solution
             size_t startIndex = solution.second;
             size_t endIndex = startIndex + l;//inclusively
-            std::cout << "Found suffix from " << startIndex << " to " << endIndex << std::endl;
+            if constexpr (Debug) std::cout << "Found suffix from " << startIndex << " to " << endIndex << std::endl;
+            return startIndex;
         }
 
         inline void collectingBfs(std::vector<std::pair<size_t, size_t>>& candidates) {

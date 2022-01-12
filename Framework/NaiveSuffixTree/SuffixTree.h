@@ -95,6 +95,12 @@ namespace NaiveSuffixTree {
             std::cout << std::endl;
         }
 
+        inline std::string substring(size_t startIndex, size_t length) const noexcept {
+            std::string result(text + startIndex);
+            result.resize(length);
+            return result;
+        }
+
     public:
         const CharType* text;
         Node<CharType> root;
