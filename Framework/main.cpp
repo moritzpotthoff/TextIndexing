@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "UkkonenSuffixTree/SuffixTree.h"
+#include "NaiveSuffixTree/SuffixTree.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -19,10 +19,10 @@ int main(int argc, char *argv[]) {
 
     if (queryChoice.compare("topk") == 0) {
         std::cout << "Requested topk query." << std::endl;
-        UkkonenSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
+        NaiveSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
-        UkkonenSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
+        NaiveSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
