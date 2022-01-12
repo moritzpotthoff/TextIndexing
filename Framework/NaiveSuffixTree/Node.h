@@ -33,9 +33,9 @@ namespace NaiveSuffixTree {
         }
 
         inline void print(int depth) {
-            std::cout << std::string(depth, ' ') << "Node " << this << " with startIndex " << startIndex << ", endIndex " << endIndex << " and parent " << parent << std::endl;
+            std::cout << "Node [" << startIndex << ", " << endIndex << "), #leaves=" << numberOfLeaves << ", depth=" << previousStringDepth << std::endl;
             for (std::pair<CharType, Node<CharType>*> element : children) {
-                std::cout << std::string(depth + 2, ' ') << "Key " << element.first << " is child " << element.second << std::endl;
+                std::cout << std::string(depth + 3, ' ') << "Char='" << element.first << "': ";
                 element.second->print(depth + 4);
             }
         }
@@ -45,6 +45,8 @@ namespace NaiveSuffixTree {
         size_t startIndex;//inclusive, absolute index
         size_t endIndex;//exclusive, absolute index
         std::map<CharType, Node<CharType>*> children;
+        size_t numberOfLeaves;
+        size_t previousStringDepth;
     };
 
 }

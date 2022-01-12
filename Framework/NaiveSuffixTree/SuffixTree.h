@@ -82,8 +82,10 @@ namespace NaiveSuffixTree {
                 }
             }
 
-            std::cout << "Done constructing suffix tree: " << std::endl;
-            root.print(4);
+            if constexpr (Debug) {
+                std::cout << "Done constructing suffix tree: " << std::endl;
+                root.print(4);
+            }
         }
 
         inline void print() {
@@ -93,7 +95,7 @@ namespace NaiveSuffixTree {
             std::cout << std::endl;
         }
 
-    private:
+    public:
         const CharType* text;
         Node<CharType> root;
         size_t n;//input length
