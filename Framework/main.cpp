@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "SuffixTree/SuffixTree.h"
+#include "UkkonenSuffixTree/SuffixTree.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -11,34 +11,18 @@ int main(int argc, char *argv[]) {
 
     std::string queryChoice(argv[1]);
     std::string inputFileName(argv[2]);
-
     std::ifstream inputFile(inputFileName);
-
-
     std::stringstream inputBuffer;
     inputBuffer << inputFile.rdbuf();
     std::string inputText = inputBuffer.str();
     std::cout << "Read input file: " << inputText << std::endl;
-    /*
-    inputFile.open(inputFileName);
-    if (!inputFile.is_open()) {
-        std::cout << "Error while reading file." << std::endl;
-        return 1;
-    }
-    std::cout << "Reading input file" << std::endl;
-    char line[100];
-    while (inputFile.getline(line, 100)) {
-        std::cout << line << std::endl;
-    }
-    inputFile.close();
-     */
 
     if (queryChoice.compare("topk") == 0) {
         std::cout << "Requested topk query." << std::endl;
-        SuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
+        UkkonenSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
-        SuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
+        UkkonenSuffixTree::SuffixTree<char, true> stree(inputText.c_str(), inputText.length());
     } else {
         std::cout << "Unknown query choice." << std::endl;
         return 1;

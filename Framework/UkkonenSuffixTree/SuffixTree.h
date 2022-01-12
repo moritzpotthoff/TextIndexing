@@ -5,7 +5,7 @@
 
 #include "Node.h"
 
-namespace SuffixTree {
+namespace UkkonenSuffixTree {
 
     template<typename CHAR_TYPE, bool DEBUG = false>
     class SuffixTree {
@@ -114,6 +114,7 @@ namespace SuffixTree {
 
         inline bool rule2Applies(Node<CharType>* activeNode, CharType activeEdge, int activeLength, CharType newCharacter) {
             if constexpr (Debug) std::cout << "  Checking rule 2 with activeNode " << activeNode << ", activeEdge " << activeEdge << " and activeLength " << activeLength << std::endl;
+            if (activeEdge == NoEdge) return false;
             Node<CharType>* targetEdge = activeNode->getChild(activeEdge);
             if (activeLength < targetEdge->getSubstringLength()) {
                 if constexpr (Debug) std::cout << "   inside of an edge" << std::endl;

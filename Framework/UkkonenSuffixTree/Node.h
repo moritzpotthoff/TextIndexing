@@ -3,7 +3,7 @@
 #include <map>
 #include "Helpers.h"
 
-namespace SuffixTree {
+namespace UkkonenSuffixTree {
     template<typename CHAR_TYPE>
     class Node {
         using CharType = CHAR_TYPE;
