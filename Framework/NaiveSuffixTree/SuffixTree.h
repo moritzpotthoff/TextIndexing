@@ -55,6 +55,7 @@ namespace NaiveSuffixTree {
 
                         //add new node that represents the remaining part of the suffix starting at currentStart and ending at n
                         Node<CharType>* newNode = new Node(splitterNode, currentStart, n);
+                        newNode->representedSuffix = i;
 
                         //set correct children for splitter
                         splitterNode->addChild(text[currentStart], newNode);
@@ -72,6 +73,7 @@ namespace NaiveSuffixTree {
                 if (!suffixInserted) {
                     //no suitable edge found from currentNode, add edge from there.
                     Node<CharType>* newNode = new Node(currentNode, currentStart, n);
+                    newNode->representedSuffix = i;
                     currentNode->addChild(text[currentStart], newNode);
                 }
 

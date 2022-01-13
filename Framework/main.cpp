@@ -3,6 +3,7 @@
 
 #include "NaiveSuffixTree/SuffixTree.h"
 #include "Query/TopKQuery.h"
+#include "Query/RepeatQuery.h"
 
 struct TopKQuery {
     size_t l;
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
     }
 
     const bool Debug = false;
+    const bool PreprocessingDebug = false;
 
     std::string queryChoice(argv[1]);
     if (queryChoice.compare("topk") == 0) {
@@ -47,7 +49,7 @@ int main(int argc, char *argv[]) {
         inputFile >> inputText;
         if constexpr (Debug) std::cout << "Read input file: '" << inputText << "'" << std::endl;
 
-        NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str(), inputText.length());
+        NaiveSuffixTree::SuffixTree<char, PreprocessingDebug> stree(inputText.c_str(), inputText.length());
 
         //generate query
         Query::TopKQuery<char, Debug> query(&stree);
@@ -58,7 +60,27 @@ int main(int argc, char *argv[]) {
         }
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
-        //NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str(), inputText.length());
+
+        std::string inputFileName(argv[2]);
+        std::ifstream inputFile(inputFileName);
+
+        //read remaining part of the input
+        /*
+        std::stringstream inputBuffer;
+        inputBuffer << inputFile.rdbuf();
+        std::string inputText = inputBuffer.str();
+        */
+        std::string inputText;
+        inputFile >> inputText;
+        if constexpr (Debug) std::cout << "Read input file: '" << inputText << "'" << std::endl;
+
+        NaiveSuffixTree::SuffixTree<char, PreprocessingDebug> stree(inputText.c_str(), inputText.length());
+
+        //generate query
+        Query::RepeatQuery<char, Debug> query(&stree);
+        size_t startPosition, length;
+        std::tie(startPosition, length) = query.runQuery();
+        std::cout << "Query result: " << stree.substring(startPosition, length) << stree.substring(startPosition, length) << " (" << startPosition << ", " << length << ")" << std::endl;
     } else {
         std::cout << "Unknown query choice." << std::endl;
         return 1;

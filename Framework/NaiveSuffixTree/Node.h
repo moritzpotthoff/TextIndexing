@@ -40,6 +40,10 @@ namespace NaiveSuffixTree {
             }
         }
 
+        inline size_t stringDepth() const noexcept {
+            return previousStringDepth + endIndex - startIndex;
+        }
+
     public:
         Node<CharType>* parent;
         size_t startIndex;//inclusive, absolute index
@@ -47,6 +51,7 @@ namespace NaiveSuffixTree {
         std::map<CharType, Node<CharType>*> children;
         size_t numberOfLeaves;
         size_t previousStringDepth;
+        size_t representedSuffix;
     };
 
 }
