@@ -16,13 +16,25 @@ namespace Query {
         size_t startPosition;
     };
 
+    /**
+     * The overall query idea, explained in more detail below:
+     *  - Precompute the string depth of all nodes.
+     *  - Precompute the number of leaves under each node.
+     *    That is equal to the number of suffixes that this node represents, which all have the same prefix of length of its string depth.
+     *    Therefore, it is equal to the number of substrings of their stringDepth in the input.
+     *  - Select all highest nodes with string depth >= l. These represent substrings of length >= l (if > l, then a prefix of length l occurs exactly as often).
+     *  - Stable-sort those candidates by their #occurences to find the k-th entry. Return that.
+     */
     template<typename CHAR_TYPE, typename PROFILER, bool DEBUG = false>
     class TopKQuery {
         using CharType = CHAR_TYPE;
-        using Profiler = PROFILER;//For evaluation, use with TopKProfiler, for production, use NoProfiler. All method calls made to profiler in this class are for time measurements.
+        using Profiler = PROFILER;//For evaluation, use with TopKProfiler; for production, use NoProfiler. All method calls made to profiler in this class are for time measurements.
         static const bool Debug = DEBUG;
 
     public:
+        /**
+         * Generates a new query and already does some additional preprocessing on the suffix tree that will be needed later.
+         */
         TopKQuery(NaiveSuffixTree::SuffixTree<CharType, Debug>* tree) :
             tree(tree) {
             profiler.startInitialization();
@@ -157,6 +169,7 @@ namespace Query {
     public:
         NaiveSuffixTree::SuffixTree<CharType, Debug>* tree;
 
+        //Used solely for optimization.
         Profiler profiler;
     };
 }
