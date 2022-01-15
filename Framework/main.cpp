@@ -43,18 +43,14 @@ int main(int argc, char *argv[]) {
         if constexpr (Debug) std::cout << "Found " << numberOfQueries << " queries." << std::endl;
 
         //read remaining part of the input
-        /*
         std::stringstream inputBuffer;
         inputBuffer << inputFile.rdbuf();
         std::string inputText = inputBuffer.str();
-        */
-        std::string inputText;
-        inputFile >> inputText;
-        if constexpr (Debug) std::cout << "Read input file: '" << inputText << "'" << std::endl;
 
         Helpers::Timer preprocessingTimer;
-        NaiveSuffixTree::SuffixTree<char, PreprocessingDebug> stree(inputText.c_str(), inputText.length());
+        NaiveSuffixTree::SuffixTree<char, PreprocessingDebug> stree(inputText.c_str() + 2, inputText.length() - 2); //+/-2 to skip the new line that is still read into inputText
         size_t preprocessingTime = preprocessingTimer.getMilliseconds();
+        std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
         //generate query
         Helpers::Timer queryInitTimer;
@@ -68,7 +64,7 @@ int main(int argc, char *argv[]) {
             queryTimer.restart();
             size_t startIndex = query.runQuery(queries[i].l, queries[i].k);
             totalQueryTime += queryTimer.getMilliseconds();
-            //std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
+            std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
         }
 
         std::cout << "Preprocessing time: " << preprocessingTime << std::endl;

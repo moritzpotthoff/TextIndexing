@@ -95,6 +95,8 @@ namespace Query {
             //TODO avoid recursion?
             node->stringDepth = depth + node->endIndex - node->startIndex;
             if (node->hasChildren()) {
+                //calculate represented suffix also for non leaves.
+                node->representedSuffix = node->endIndex - node->stringDepth;
                 //inner node, sum up over all children. node->numberOfLeaves is already initialized to 0.
                 for (const auto & [key, child] : node->children) {
                     node->numberOfLeaves += countingDfs(child, node->stringDepth);

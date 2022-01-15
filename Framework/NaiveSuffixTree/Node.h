@@ -34,7 +34,7 @@ namespace NaiveSuffixTree {
         }
 
         inline void print(int depth) {
-            std::cout << "Node [" << startIndex << ", " << endIndex << "), #leaves=" << numberOfLeaves << ", depth=" << stringDepth << std::endl;
+            std::cout << "Node [" << startIndex << ", " << endIndex << "), #leaves=" << numberOfLeaves << ", depth=" << stringDepth << ", representing suffix " << representedSuffix << std::endl;
             for (std::pair<CharType, Node<CharType>*> element : children) {
                 std::cout << std::string(depth + 3, ' ') << "Char='" << element.first << "': ";
                 element.second->print(depth + 4);
