@@ -8,9 +8,10 @@
 #include "../NaiveSuffixTree/Node.h"
 
 namespace Query {
-    template<typename CHAR_TYPE, bool DEBUG = false>
+    template<typename CHAR_TYPE, typename PROFILER, bool DEBUG = false>
     class RepeatQuery {
         using CharType = CHAR_TYPE;
+        using Profiler = PROFILER;
         static const bool Debug = DEBUG;
 
     public:
@@ -18,8 +19,12 @@ namespace Query {
             tree(tree),
             suffixes(tree->n) {
             //precompute number of leaves under each node.
+            profiler.startStringDepth();
             calculateStringDepths();
+            profiler.endStringDepth();
+            profiler.startCollectSuffixes();
             collectSuffixesInTextOrder();
+            profiler.endCollectSuffixes();
             if constexpr (Debug) {
                 std::cout << std::endl << std::endl << std::endl << "Done with query preprocessing. Tree is:" << std::endl;
                 tree->root.print(4);
@@ -31,18 +36,25 @@ namespace Query {
         }
 
         inline std::pair<size_t, size_t> runQuery() noexcept {
+            profiler.startActualQuery();
             for (int l = tree->n / 2; l >= 0; l--) {
+                profiler.startLengthPhase();
                 if constexpr (Debug) std::cout << "Checking for length " << l << std::endl;
-                for (size_t suffix = 0; suffix < tree->n - l; suffix++) {
+                for (size_t suffix = 0; suffix < tree->n - (2 * l) + 1; suffix++) {
                     //get lowest common ancestor of suffix nodes for suffix and suffix + l
+                    profiler.startLcaPhase();
                     NaiveSuffixTree::Node<CharType>* lcaNode = getLcaNode(suffix, suffix + l);
+                    profiler.endLcaPhase();
                     if constexpr (Debug) std::cout << "  Checking string depth for lca node " << lcaNode << std::endl;
                     if (lcaNode->stringDepth == l) {
                         //this is the first solution, return it.
+                        profiler.endActualQuery();
                         return std::make_pair(suffix, l);
                     }
                 }
+                profiler.endLengthPhase();
             }
+            profiler.endActualQuery();
             return std::make_pair(0, 0);
         }
 
@@ -106,8 +118,10 @@ namespace Query {
             }
         }
 
-    private:
+    public:
         NaiveSuffixTree::SuffixTree<CharType, Debug>* tree;
         std::vector<NaiveSuffixTree::Node<CharType>*> suffixes;
+
+        Profiler profiler;
     };
 }

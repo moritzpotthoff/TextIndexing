@@ -6,6 +6,7 @@
 #include "Query/RepeatQuery.h"
 #include "Helpers/Timer.h"
 #include "Helpers/TopKProfiler.h"
+#include "Helpers/RepeatProfiler.h"
 
 /**
  * One topK Query for length l and the k-th candidate.
@@ -15,8 +16,10 @@ struct TopKQuery {
     size_t k;
 };
 
-//Debug flag.
-static const bool Debug = false;
+//Interactive flag. If true, generates a little more output than just the result line.
+static const bool Interactive = true;
+//Debug flag. Generates extensive debug info.
+static const bool Debug = Interactive && false;
 
 inline static void readRemainingFileContents(std::ifstream& inputFile, std::string& inputText) {
     std::stringstream inputBuffer;
@@ -25,7 +28,7 @@ inline static void readRemainingFileContents(std::ifstream& inputFile, std::stri
 }
 
 inline static void handleTopKQuery(char *argv[]) {
-    if constexpr (Debug) std::cout << "Requested topk query." << std::endl;
+    if constexpr (Interactive) std::cout << "Requested topk query." << std::endl;
 
     std::string inputFileName(argv[2]);
     std::ifstream inputFile(inputFileName);
@@ -41,7 +44,7 @@ inline static void handleTopKQuery(char *argv[]) {
         inputFile >> k;
         queries.emplace_back(l, k);
     }
-    if constexpr (Debug) std::cout << "Found " << numberOfQueries << " queries." << std::endl;
+    if constexpr (Interactive) std::cout << "Found " << numberOfQueries << " queries." << std::endl;
 
     //Read the actual text.
     std::string inputText;
@@ -53,7 +56,7 @@ inline static void handleTopKQuery(char *argv[]) {
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
     NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
-    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
+    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
@@ -71,17 +74,19 @@ inline static void handleTopKQuery(char *argv[]) {
         totalQueryTime += queryTimer.getMilliseconds();
         queryResults << stree.substring(startIndex, queries[i].l);
         if (i < numberOfQueries - 1) queryResults << ";";
-        std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
+        if constexpr (Interactive) std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
     }
 
-    std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
-    std::cout << "Query init. time:   " << queryInitTime << std::endl;
-    std::cout << "Total query time:   " << totalQueryTime << std::endl;
-    std::cout << "Avg. query time:    " << totalQueryTime / (double) numberOfQueries << std::endl;
-
-    std::cout << std::endl;
-    query.profiler.print();
-    std::cout << std::endl;
+    if constexpr (Interactive) {
+        std::cout << std::endl;
+        std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
+        std::cout << "Query init. time:   " << queryInitTime << std::endl;
+        std::cout << "Total query time:   " << totalQueryTime << std::endl;
+        std::cout << "Avg. query time:    " << totalQueryTime / (double) numberOfQueries << std::endl;
+        std::cout << std::endl;
+        query.profiler.print();
+        std::cout << std::endl;
+    }
 
     std::cout   << "RESULT algo=topk name=moritz-potthoff"
                 << " construction time=" << (preprocessingTime + queryInitTime)
@@ -91,7 +96,7 @@ inline static void handleTopKQuery(char *argv[]) {
 }
 
 inline static void handleRepeatQuery(char *argv[]) {
-    std::cout << "Requested repeat query." << std::endl;
+    if constexpr (Interactive) std::cout << "Requested repeat query." << std::endl;
 
     std::string inputFileName(argv[2]);
     std::ifstream inputFile(inputFileName);
@@ -99,7 +104,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Read the input text.
     std::string inputText;
     readRemainingFileContents(inputFile, inputText);
-    if constexpr (Debug) std::cout << "Read input file: '" << inputText << "'" << std::endl;
+    if constexpr (Interactive) std::cout << "Read input file: '" << inputText << "'" << std::endl;
 
     //Measure the preprocessing time.
     Helpers::Timer preprocessingTimer;
@@ -110,7 +115,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Again, query initialization time will be measured as preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
-    Query::RepeatQuery<char, Debug> query(&stree);
+    Query::RepeatQuery<char, Query::RepeatProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
     size_t startPosition, length;
@@ -118,14 +123,16 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Compute the query.
     std::tie(startPosition, length) = query.runQuery();
     size_t queryTime = queryTimer.getMilliseconds();
-    std::cout << "Query result: " << stree.substring(startPosition, length) << stree.substring(startPosition, length) << " (" << startPosition << ", " << length << ")" << std::endl << std::endl;
-
-    std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
-    std::cout << "Query init. time:   " << queryInitTime << std::endl;
-    std::cout << "Total query time:   " << queryTime << std::endl;
-
-    std::cout << std::endl << std::endl;
-
+    if constexpr (Interactive) {
+        std::cout << "Query result: " << stree.substring(startPosition, length) << stree.substring(startPosition, length) << " (" << startPosition << ", " << length << ")" << std::endl << std::endl;
+        std::cout << std::endl;
+        std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
+        std::cout << "Query init. time:   " << queryInitTime << std::endl;
+        std::cout << "Total query time:   " << queryTime << std::endl;
+        std::cout << std::endl;
+        query.profiler.print();
+        std::cout << std::endl;
+    }
     std::cout << "RESULT algo=repeat name=moritz-potthoff"
               << " construction time=" << (preprocessingTime + queryInitTime)
               << " query time=" << queryTime

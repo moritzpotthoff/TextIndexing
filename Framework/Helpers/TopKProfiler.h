@@ -3,19 +3,19 @@
 #include "Timer.h"
 
 namespace Query {
-    class NoProfiler {
+    class TopKNoProfiler {
     public:
-        void startInitialization() const noexcept {}
-        void endInitialization() const noexcept {}
-        void startNewQuery() const noexcept {}
-        void endCurrentQuery() const noexcept {}
-        void startCollectCandidates() const noexcept {}
-        void endCollectCandidates() const noexcept {}
-        void startSortCandidates() const noexcept {}
-        void endSortCandidates() const noexcept {}
-        void startReconstructSolution() const noexcept {}
-        void endReconstructSolution() const noexcept {}
-        void print() const noexcept {}
+        inline void startInitialization() const noexcept {}
+        inline void endInitialization() const noexcept {}
+        inline void startNewQuery() const noexcept {}
+        inline void endCurrentQuery() const noexcept {}
+        inline void startCollectCandidates() const noexcept {}
+        inline void endCollectCandidates() const noexcept {}
+        inline void startSortCandidates() const noexcept {}
+        inline void endSortCandidates() const noexcept {}
+        inline void startReconstructSolution() const noexcept {}
+        inline void endReconstructSolution() const noexcept {}
+        inline void print() const noexcept {}
     };
 
     class TopKProfiler {
@@ -28,48 +28,48 @@ namespace Query {
             reconstructSolutionTime(0),
             numberOfQueries(0) {}
 
-        void startInitialization() noexcept {
+        inline void startInitialization() noexcept {
             initializationTimer.restart();
         }
 
-        void endInitialization() noexcept {
+        inline void endInitialization() noexcept {
             initializationTime = initializationTimer.getMilliseconds();
         }
 
-        void startNewQuery() noexcept {
+        inline void startNewQuery() noexcept {
             numberOfQueries++;
             totalQueryTimer.restart();
         }
 
-        void endCurrentQuery() noexcept {
+        inline void endCurrentQuery() noexcept {
             totalQueryTime += totalQueryTimer.getMilliseconds();
         }
 
-        void startCollectCandidates() noexcept {
+        inline void startCollectCandidates() noexcept {
             collectCandidatesTimer.restart();
         }
 
-        void endCollectCandidates() noexcept {
+        inline void endCollectCandidates() noexcept {
             collectCandidatesTime += collectCandidatesTimer.getMilliseconds();
         }
 
-        void startSortCandidates() noexcept {
+        inline void startSortCandidates() noexcept {
             sortCandidatesTimer.restart();
         }
 
-        void endSortCandidates() noexcept {
+        inline void endSortCandidates() noexcept {
             sortCandidatesTime += sortCandidatesTimer.getMilliseconds();
         }
 
-        void startReconstructSolution() noexcept {
+        inline void startReconstructSolution() noexcept {
             reconstructSolutionTimer.restart();
         }
 
-        void endReconstructSolution() noexcept {
+        inline void endReconstructSolution() noexcept {
             reconstructSolutionTime += reconstructSolutionTimer.getMilliseconds();
         }
 
-        void print() const noexcept {
+        inline void print() const noexcept {
             std::cout << "TopK Query evaluation run for " << numberOfQueries << " queries." << std::endl;
             std::cout << "  Initialization time:    " << initializationTime << "ms" << std::endl;
             std::cout << "  Avg. total query time:  " << totalQueryTime / (double) numberOfQueries << "ms" << std::endl;
