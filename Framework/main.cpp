@@ -6,6 +6,7 @@
 #include "Query/TopKQuery.h"
 #include "Query/RepeatQuery.h"
 #include "Helpers/Timer.h"
+#include "Helpers/TopKProfiler.h"
 
 struct TopKQuery {
     size_t l;
@@ -57,7 +58,7 @@ int main(int argc, char *argv[]) {
 
         //generate query
         Helpers::Timer queryInitTimer;
-        Query::TopKQuery<char, Debug> query(&stree);
+        Query::TopKQuery<char, Query::TopKProfiler, Debug> query(&stree);
         size_t queryInitTime = queryInitTimer.getMilliseconds();
 
         size_t totalQueryTime = 0;
@@ -67,13 +68,16 @@ int main(int argc, char *argv[]) {
             queryTimer.restart();
             size_t startIndex = query.runQuery(queries[i].l, queries[i].k);
             totalQueryTime += queryTimer.getMilliseconds();
-            std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
+            //std::cout << "Query l=" << queries[i].l << ", k=" << queries[i].k << ": " << stree.substring(startIndex, queries[i].l) << " (" << startIndex << ")" << std::endl;
         }
 
         std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
         std::cout << "Query init. time:   " << queryInitTime << std::endl;
         std::cout << "Total query time:   " << totalQueryTime << std::endl;
         std::cout << "Avg. query time:    " << totalQueryTime / (double) numberOfQueries << std::endl;
+
+        std::cout << std::endl;
+        query.profiler.print();
     } else if (queryChoice.compare("repeat") == 0) {
         std::cout << "Requested repeat query." << std::endl;
 

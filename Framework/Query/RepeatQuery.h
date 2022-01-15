@@ -37,7 +37,7 @@ namespace Query {
                     //get lowest common ancestor of suffix nodes for suffix and suffix + l
                     NaiveSuffixTree::Node<CharType>* lcaNode = getLcaNode(suffix, suffix + l);
                     if constexpr (Debug) std::cout << "  Checking string depth for lca node " << lcaNode << std::endl;
-                    if (lcaNode->stringDepth() == l) {
+                    if (lcaNode->stringDepth == l) {
                         //this is the first solution, return it.
                         return std::make_pair(suffix, l);
                     }
@@ -100,9 +100,9 @@ namespace Query {
 
         inline void stringDepthDfs(NaiveSuffixTree::Node<CharType>* node, size_t depth) noexcept {
             //TODO avoid recursion?
-            node->previousStringDepth = depth;
+            node->stringDepth = depth + node->endIndex - node->startIndex;
             for (const auto & [key, child] : node->children) {
-                stringDepthDfs(child, depth + node->endIndex - node->startIndex);
+                stringDepthDfs(child, node->stringDepth);
             }
         }
 
