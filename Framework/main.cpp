@@ -56,7 +56,7 @@ inline static void handleTopKQuery(char *argv[]) {
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
     NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
-    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
+    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
@@ -104,7 +104,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Read the input text.
     std::string inputText;
     readRemainingFileContents(inputFile, inputText);
-    if constexpr (Interactive) std::cout << "Read input file: '" << inputText << "'" << std::endl;
+    if constexpr (Debug) std::cout << "Read input file: '" << inputText << "'" << std::endl;
 
     //Measure the preprocessing time.
     Helpers::Timer preprocessingTimer;

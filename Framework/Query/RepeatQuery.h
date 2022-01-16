@@ -9,6 +9,31 @@
 #include "../NaiveSuffixTree/Node.h"
 
 namespace Query {
+    /**
+     * Brief summary of the thoughts that led to my query approach:
+     *  - If there is a substring aa, then the text must have the form uaav.
+     *  - This means that there are two suffixes, aav and av starting with the same prefix a of length l.
+     *    The suffixes have indices i and i+l for some i.
+     *  - Consequently, for any substring of the form aa with length 2*l, there exists an inner node in the suffix tree
+     *    with suffix depth l (the path to it represents the common prefix, a), that has two leaves below it which
+     *    represent exactly the suffixes i and i+l and vice-versa.
+     *  - Find such a node and we get the result.
+     *
+     * Therefore, the query works as follows:
+     *  - Precompute suffix depths in the suffix tree.
+     *  - Collect all inner nodes, stable-sorted by their suffix depth (descending); stable-sort to preserve lexicographic ordering.
+     *  - For each inner node n with suffix depth l:
+     *      - Get the sorted suffix indices for all suffixes represented by leaves below n
+     *        Observe that all inner nodes below n were already considered (they have greater suffix depth).
+     *        Therefore, we can obtain the sorted list of suffixes
+     *        by *merging* the (available) lists of suffixes for each child that is an inner node
+     *        and inserting suffixes for all children that are already leaves.
+     *      - In the sorted list of suffixes, efficiently check if there is any pair of indices with difference of exactly l.
+     *        By the above observation, such a pair is a witness for a substring aa starting at the smaller of the two suffixes that
+     *        make up the pair.
+     *  - Because we consider inner nodes by descending string depth, the first witness is the result.
+     *  - Return the suffix start position.
+     */
     template<typename CHAR_TYPE, typename PROFILER, bool DEBUG = false>
     class RepeatQuery {
         using CharType = CHAR_TYPE;
