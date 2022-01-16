@@ -17,55 +17,24 @@ namespace Query {
 
     public:
         RepeatQuery(NaiveSuffixTree::SuffixTree<CharType, Debug>* tree) :
-            tree(tree),
-            suffixes(tree->n) {
+            tree(tree) {
             //precompute number of leaves under each node.
             profiler.startStringDepth();
             calculateStringDepths();
             profiler.endStringDepth();
-            profiler.startCollectSuffixes();
-            collectSuffixesInTextOrder();
-            profiler.endCollectSuffixes();
+            profiler.startCollectInnerNodes();
+            collectInnerNodes();
+            profiler.endCollectInnerNodes();
             if constexpr (Debug) {
                 std::cout << std::endl << std::endl << std::endl << "Done with query preprocessing. Tree is:" << std::endl;
                 tree->root.print(4);
-                std::cout << std::endl << std::endl << std::endl << "Suffix pointer array is:" << std::endl;
-                for (size_t i = 0; i < tree->n; i++) {
-                    std::cout << "   " << i << ": " << suffixes[i] << std::endl;
-                }
             }
         }
 
-        /*
         inline std::pair<size_t, size_t> runQuery() noexcept {
             profiler.startActualQuery();
-            for (int l = tree->n / 2; l >= 0; l--) {
-                profiler.startLengthPhase();
-                if constexpr (Debug) std::cout << "Checking for length " << l << std::endl;
-                for (size_t suffix = 0; suffix < tree->n - (2 * l) + 1; suffix++) {
-                    //get lowest common ancestor of suffix nodes for suffix and suffix + l
-                    profiler.startLcaPhase();
-                    NaiveSuffixTree::Node<CharType>* lcaNode = getLcaNode(suffix, suffix + l);
-                    profiler.endLcaPhase();
-                    if constexpr (Debug) std::cout << "  Checking string depth for lca node " << lcaNode << std::endl;
-                    if (lcaNode->stringDepth == l) {
-                        //this is the first solution, return it.
-                        profiler.endActualQuery();
-                        return std::make_pair(suffix, 2 * l);
-                    }
-                }
-                profiler.endLengthPhase();
-            }
-            profiler.endActualQuery();
-            return std::make_pair(0, 0);
-        }
-        */
-
-        inline std::pair<size_t, size_t> runQuery() noexcept {
-            profiler.startActualQuery();
-            std::vector<NaiveSuffixTree::Node<CharType>*> sortedInnerNodes;
-            collectInnerNodes(sortedInnerNodes);
             for (NaiveSuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
+                profiler.startInnerNodePhase();
                 if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
@@ -79,13 +48,17 @@ namespace Query {
                 //leaves are already sorted
                 bool foundSolution;
                 size_t startIndex;
+                profiler.startPairPhase();
                 std::tie(foundSolution, startIndex) = findPair(leaves, innerNode->stringDepth);
+                profiler.endPairPhase();
                 if (foundSolution) {
                     if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
+                    profiler.endInnerNodePhase();
                     profiler.endActualQuery();
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
                 if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
+                profiler.endInnerNodePhase();
             }
             profiler.endActualQuery();
             return std::make_pair(0, 0);
@@ -128,7 +101,7 @@ namespace Query {
             }
         }
 
-        inline void collectInnerNodes(std::vector<NaiveSuffixTree::Node<CharType>*> &sortedInnerNodes) noexcept {
+        inline void collectInnerNodes() noexcept {
             sortedInnerNodes.reserve(tree->n);
             std::queue<NaiveSuffixTree::Node<CharType>*> queue;
             queue.push(&tree->root);
@@ -155,54 +128,6 @@ namespace Query {
             suffixesBelowInnerNode.resize(sortedInnerNodes.size());
         }
 
-        inline NaiveSuffixTree::Node<CharType>* getLcaNode(size_t firstSuffix, size_t secondSuffix) {
-            if constexpr (Debug) std::cout << "  Computing LCA for " << firstSuffix << ", " << secondSuffix << std::endl;
-            NaiveSuffixTree::Node<CharType>* firstNode = suffixes[firstSuffix];
-            NaiveSuffixTree::Node<CharType>* secondNode = suffixes[secondSuffix];
-            //get paths from both nodes to the root
-            std::vector<NaiveSuffixTree::Node<CharType>*> firstPath;
-            std::vector<NaiveSuffixTree::Node<CharType>*> secondPath;
-            //TODO reserve size.
-            while (firstNode != &tree->root) {
-                firstPath.push_back(firstNode);
-                firstNode = firstNode->parent;
-            }
-            while (secondNode != &tree->root) {
-                secondPath.push_back(secondNode);
-                secondNode = secondNode->parent;
-            }
-            firstPath.push_back(&tree->root);
-            secondPath.push_back(&tree->root);
-            if constexpr (Debug) std::cout << "    Got paths" << std::endl;
-            //find last equal node from the back of the two vertices (that is the lca)
-            size_t firstElement = firstPath.size() - 1;
-            size_t secondElement = secondPath.size() - 1;
-            while (firstPath[firstElement] == secondPath[secondElement]) {
-                firstElement--;
-                secondElement--;
-            }
-            if constexpr (Debug) std::cout << "    Found lca" << std::endl;
-            return firstPath[firstElement + 1];
-        }
-
-        inline void collectSuffixesInTextOrder() {
-            std::queue<NaiveSuffixTree::Node<CharType>*> queue;
-            queue.push(&tree->root);
-            while (!queue.empty()) {
-                NaiveSuffixTree::Node<CharType>* node = queue.front();
-                queue.pop();
-                if (node->hasChildren()) {
-                    //not a leaf, explore the children instead
-                    for (const auto & [key, child] : node->children) {
-                        queue.push(child);
-                    }
-                } else {
-                    //leaf, representing a suffix, add to the list.
-                    suffixes[node->representedSuffix] = node;
-                }
-            }
-        }
-
         inline void calculateStringDepths() noexcept {
             stringDepthDfs(&tree->root, 0);
         }
@@ -217,7 +142,7 @@ namespace Query {
 
     public:
         NaiveSuffixTree::SuffixTree<CharType, Debug>* tree;
-        std::vector<NaiveSuffixTree::Node<CharType>*> suffixes;
+        std::vector<NaiveSuffixTree::Node<CharType>*> sortedInnerNodes;
         std::vector<std::vector<size_t>> suffixesBelowInnerNode;
 
         Profiler profiler;

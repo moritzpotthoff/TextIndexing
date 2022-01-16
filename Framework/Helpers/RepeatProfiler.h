@@ -7,27 +7,27 @@ namespace Query {
     public:
         inline void startStringDepth() const noexcept {}
         inline void endStringDepth() const noexcept {}
-        inline void startCollectSuffixes() const noexcept {}
-        inline void endCollectSuffixes() const noexcept {}
+        inline void startCollectInnerNodes() const noexcept {}
+        inline void endCollectInnerNodes() const noexcept {}
         inline void startActualQuery() const noexcept {}
         inline void endActualQuery() const noexcept {}
-        inline void startLengthPhase() const noexcept {}
-        inline void endLengthPhase() const noexcept {}
-        inline void startLcaPhase() const noexcept {}
-        inline void endLcaPhase() const noexcept {}
+        inline void startInnerNodePhase() const noexcept {}
+        inline void endInnerNodePhase() const noexcept {}
+        inline void startPairPhase() const noexcept {}
+        inline void endPairPhase() const noexcept {}
         inline void print() const noexcept {}
     };
 
     class RepeatProfiler {
     public:
-        RepeatProfiler() : 
-            stringDepthTime(0),
-            collectSuffixTime(0),
-            actualQueryTime(0),
-            totalLengthPhaseTime(0),
-            lowestCommonAncestorTime(0),
-            numberOfLengthPhases(0),
-            numberOfLcaCalls(0) {}
+        RepeatProfiler() :
+                stringDepthTime(0),
+                collectInnerNodesTime(0),
+                actualQueryTime(0),
+                totalInnerNodePhaseTime(0),
+                totalPairTime(0),
+                numberOfInnerNodePhases(0),
+                numberOfPairCalls(0) {}
 
         inline void startStringDepth() noexcept {
             stringDepthTimer.restart();
@@ -37,12 +37,12 @@ namespace Query {
             stringDepthTime = stringDepthTimer.getMilliseconds();
         }
 
-        inline void startCollectSuffixes() noexcept {
-            collectSuffixTimer.restart();
+        inline void startCollectInnerNodes() noexcept {
+            collectInnerNodesTimer.restart();
         }
 
-        inline void endCollectSuffixes() noexcept {
-            collectSuffixTime = collectSuffixTimer.getMilliseconds();
+        inline void endCollectInnerNodes() noexcept {
+            collectInnerNodesTime = collectInnerNodesTimer.getMilliseconds();
         }
 
         inline void startActualQuery() noexcept {
@@ -53,49 +53,49 @@ namespace Query {
             actualQueryTime = actualQueryTimer.getMilliseconds();
         }
 
-        inline void startLengthPhase() noexcept {
-            numberOfLengthPhases++;
-            lengthPhaseTimer.restart();
+        inline void startInnerNodePhase() noexcept {
+            numberOfInnerNodePhases++;
+            innerNodePhaseTimer.restart();
         }
 
-        inline void endLengthPhase() noexcept {
-            totalLengthPhaseTime += lengthPhaseTimer.getMilliseconds();
+        inline void endInnerNodePhase() noexcept {
+            totalInnerNodePhaseTime += innerNodePhaseTimer.getMilliseconds();
         }
 
-        inline void startLcaPhase() noexcept {
-            numberOfLcaCalls++;
-            lowestCommonAncestorTimer.restart();
+        inline void startPairPhase() noexcept {
+            numberOfPairCalls++;
+            pairTimer.restart();
         }
 
-        inline void endLcaPhase() noexcept {
-            lowestCommonAncestorTime += lowestCommonAncestorTimer.getMilliseconds();
+        inline void endPairPhase() noexcept {
+            totalPairTime += pairTimer.getMilliseconds();
         }
 
         inline void print() const noexcept {
-            size_t totalTime = stringDepthTime + collectSuffixTime + actualQueryTime;
+            size_t totalTime = stringDepthTime + collectInnerNodesTime + actualQueryTime;
             std::cout << "Repeat Query evaluation run. Total time: " << totalTime << "ms" << std::endl;
-            std::cout << "  Total init. time:        " << (stringDepthTime + collectSuffixTime) << "ms" << std::endl;
-            std::cout << "    -- string depth:       " << stringDepthTime << "ms" << std::endl;
-            std::cout << "    -- collect suffixes:   " << collectSuffixTime << "ms" << std::endl;
-            std::cout << "  Total actual query time: " << actualQueryTime << "ms" << std::endl;
-            std::cout << "    -- length phases:      " << totalLengthPhaseTime << "ms (" << numberOfLengthPhases << " * " << (totalLengthPhaseTime / (double) numberOfLengthPhases) << ")." << std::endl;
-            std::cout << "    -- lca phases:         " << lowestCommonAncestorTime << "ms (" << numberOfLcaCalls << " * " << (lowestCommonAncestorTime / (double) numberOfLcaCalls) << ")." << std::endl;
+            std::cout << "  Total init. time:         " << (stringDepthTime + collectInnerNodesTime) << "ms" << std::endl;
+            std::cout << "    -- string depth:        " << stringDepthTime << "ms" << std::endl;
+            std::cout << "    -- collect inner nodes: " << collectInnerNodesTime << "ms" << std::endl;
+            std::cout << "  Total actual query time:  " << actualQueryTime << "ms" << std::endl;
+            std::cout << "    -- inner node phases:   " << totalInnerNodePhaseTime << "ms (" << numberOfInnerNodePhases << " * " << (totalInnerNodePhaseTime / (double) numberOfInnerNodePhases) << ")." << std::endl;
+            std::cout << "    -- pair calls:          " << totalPairTime << "ms (" << numberOfPairCalls << " * " << (totalPairTime / (double) numberOfPairCalls) << ")." << std::endl;
         }
 
     private:
         Helpers::Timer stringDepthTimer;
-        Helpers::Timer collectSuffixTimer;
+        Helpers::Timer collectInnerNodesTimer;
         Helpers::Timer actualQueryTimer;
-        Helpers::Timer lengthPhaseTimer;
-        Helpers::Timer lowestCommonAncestorTimer;
+        Helpers::Timer innerNodePhaseTimer;
+        Helpers::Timer pairTimer;
 
         size_t stringDepthTime;
-        size_t collectSuffixTime;
+        size_t collectInnerNodesTime;
         size_t actualQueryTime;
-        size_t totalLengthPhaseTime;
-        size_t lowestCommonAncestorTime;
+        size_t totalInnerNodePhaseTime;
+        size_t totalPairTime;
 
-        size_t numberOfLengthPhases;
-        size_t numberOfLcaCalls;
+        size_t numberOfInnerNodePhases;
+        size_t numberOfPairCalls;
     };
 }
