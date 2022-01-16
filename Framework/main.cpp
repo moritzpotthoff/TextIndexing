@@ -124,7 +124,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     std::tie(startPosition, length) = query.runQuery();
     size_t queryTime = queryTimer.getMilliseconds();
     if constexpr (Interactive) {
-        std::cout << "Query result: " << stree.substring(startPosition, length) << stree.substring(startPosition, length) << " (" << startPosition << ", " << length << ")" << std::endl << std::endl;
+        std::cout << "Query result: " << stree.substring(startPosition, length) << " (" << startPosition << ", " << length << ")" << std::endl << std::endl;
         std::cout << std::endl;
         std::cout << "Preprocessing time: " << preprocessingTime << std::endl;
         std::cout << "Query init. time:   " << queryInitTime << std::endl;
