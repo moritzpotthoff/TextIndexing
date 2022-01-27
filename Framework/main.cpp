@@ -161,10 +161,9 @@ int main(int argc, char *argv[]) {
     }
      */
 
-    std::string inputText = "ABBAABBA$";
+    std::string inputText(argv[1]);
     UkkonenSuffixTree::SuffixTree<char, true> suffixTree(inputText.c_str(), inputText.length());
 
-    suffixTree.print();
 
     return 0;
 }

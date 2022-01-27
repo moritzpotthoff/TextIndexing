@@ -15,6 +15,10 @@ namespace UkkonenSuffixTree {
                 startIndex(startIndex),
                 endIndex(endIndex),
                 suffixLink(suffixLink) {
+            AssertMsg(endIndex == 0 || endIndex == -1 || endIndex > startIndex, "Wrong node indices");
+            if (endIndex <= startIndex && endIndex != -1) {
+                std::cout << "WRONG NODE INDICES [" << startIndex << ", " << endIndex << "), parent " << parent << std::endl;
+            }
         }
 
         inline int getActivePointIndex(CharType activeEdge, int activeLength, int currentEnd) noexcept {
@@ -27,6 +31,11 @@ namespace UkkonenSuffixTree {
             if (endIndex == -1) actualEndIndex = currentEnd;
             AssertMsg((offset >= 0 && startIndex + offset < actualEndIndex), "Offset is invalid.");
             return startIndex + offset;
+        }
+
+        inline int trueEndIndex(int currentEnd) const noexcept {
+            if (endIndex == -1) return currentEnd;
+            return endIndex;
         }
 
         inline void addChild(CharType key, Node* value) noexcept {
