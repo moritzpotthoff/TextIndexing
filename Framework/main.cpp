@@ -8,6 +8,9 @@
 #include "Helpers/TopKProfiler.h"
 #include "Helpers/RepeatProfiler.h"
 
+#include "UkkonenSuffixTree/SuffixTree.h"
+#include "UkkonenSuffixTree/Node.h"
+
 /**
  * One topK Query for length l and the k-th candidate.
  */
@@ -141,6 +144,7 @@ inline static void handleRepeatQuery(char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
+    /*
     if (argc != 3) {
         std::cout << "Wrong number of arguments, expecting 2 arguments." << std::endl;
         return 1;
@@ -155,6 +159,12 @@ int main(int argc, char *argv[]) {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
     }
+     */
+
+    std::string inputText = "ABBAABBA$";
+    UkkonenSuffixTree::SuffixTree<char, true> suffixTree(inputText.c_str(), inputText.length());
+
+    suffixTree.print();
 
     return 0;
 }
