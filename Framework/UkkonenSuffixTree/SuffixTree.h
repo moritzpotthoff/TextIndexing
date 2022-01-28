@@ -7,12 +7,14 @@
 
 namespace UkkonenSuffixTree {
 
+    /**
+     * Creates a Suffix Tree using Ukkonen's algorithm.
+     */
     template<typename CHAR_TYPE, bool DEBUG = false>
     class SuffixTree {
         using CharType = CHAR_TYPE;
         static const bool Debug = DEBUG;
         static const int CurrentEndFlag = -1; //marks that an edges end is actually the global currentEnd
-        static const CharType NoEdge = 127;//TODO fix
 
     public:
         SuffixTree(const CharType* input, int n) :
@@ -57,6 +59,7 @@ namespace UkkonenSuffixTree {
 
             //As long as there are suffixes that need to be inserted, insert them
             while (remaining > 0) {
+                walkDown(i);
                 std::cout << "-------- RUNNING NEW SUFFIX IN ITERATION " << i << std::endl;
                 print();
                 if (activeLength == 0) {
@@ -68,11 +71,19 @@ namespace UkkonenSuffixTree {
                         //activeNode has child for text[i], update active point
                         activeEdgeIndex = i;
                         activeLength++;
+                        walkDown(i);
                         break; //extended by rule three, that ends this phase
                     } else {
                         std::cout << "  Active node has no matching edge, create new leaf." << std::endl;
                         //activeNode has no matching edge, create new leaf with current character as child from activeNode
-                        Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, -1);
+                        Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, CurrentEndFlag);
+                        /*if (!activeNode->hasChildren()) {
+                            //was leaf, now got internal node
+                            if (lastNewInternalNode != NULL) {
+                                lastNewInternalNode->suffixLink = activeNode;
+                            }
+                            lastNewInternalNode = activeNode;
+                        }*/
                         activeNode->addChild(text[i], newLeaf);
                         remaining--;//suffix was inserted
                         std::cout << "  New leaf " << newLeaf << " created" << std::endl;
@@ -85,13 +96,14 @@ namespace UkkonenSuffixTree {
                     if (!sufficientPath) {
                         //active point is beyond the end of the path, need to add a new leaf to the path
                         Node<CharType>* activeTarget = getActiveTarget();
-                        Node<CharType>* newLeaf = new Node<CharType>(activeTarget, i, -1);
+                        Node<CharType>* newLeaf = new Node<CharType>(activeTarget, i, CurrentEndFlag);
                         activeTarget->addChild(text[i], newLeaf);
 
                         if (lastNewInternalNode != NULL) {
-                            lastNewInternalNode->suffixLink = activeNode;
+                            lastNewInternalNode->suffixLink = getActiveTarget();
                         }
                         lastNewInternalNode = activeTarget;
+
                         if (activeNode != &root) {
                             activeNode = activeNode->suffixLink;
                         } else {
@@ -106,14 +118,18 @@ namespace UkkonenSuffixTree {
                         if (nextCharacter == text[i]) { // the next character is a match
                             std::cout << "    Next character is a match, walk down and break" << std::endl;
                             if (lastNewInternalNode != NULL) {
-                                lastNewInternalNode->suffixLink = activeNode;
+                                lastNewInternalNode->suffixLink = getActiveTarget();
                             }
+                            activeLength++;
                             walkDown(i);
                             break;
                         } else {
                             std::cout << "    next character does not match, split edge." << std::endl;
 
                             if (activeLength == 0) {
+                                AssertMsg(false, "This should never happen. ActiveLength == 0");
+                            }
+                            /*
                                 std::cout << "XYZXYZXYZ Active length is 0, start search at activeNode " << activeNode << std::endl;
                                 Node<CharType>* child = activeNode->getChild(text[i]);
                                 if (child != NULL) {
@@ -121,46 +137,48 @@ namespace UkkonenSuffixTree {
                                     //activeNode has child for text[i], update active point
                                     activeEdgeIndex = child->startIndex;
                                     activeLength++;
+                                    walkDown(i);
                                     break; //extended by rule three, that ends this phase
                                 } else {
                                     std::cout << "  Active node has no matching edge, create new leaf." << std::endl;
                                     //activeNode has no matching edge, create new leaf with current character as child from activeNode
-                                    Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, -1);
+                                    Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, CurrentEndFlag);
+
                                     activeNode->addChild(text[i], newLeaf);
                                     remaining--;//suffix was inserted
                                     std::cout << "  New leaf " << newLeaf << " created" << std::endl;
                                 }
                                 activeNode = &root;
                                 activeLength = 0;
-                                activeEdgeIndex = -1;
-                            } else {
-                                //next character does not match, rule 2, add new internal node and split edge accordingly.
-                                std::cout << "    WWWWWWWWWWWWWWWWWW before:" << std::endl;
-                                print();
-                                std::cout << "    WWWWWWWWWWWWWWWWWW active point index :" << activePointIndex << std::endl;
+                                activeEdgeIndex = 0;
+                            */
 
-                                Node<CharType> *activeTarget = getActiveTarget();
-                                Node<CharType> *newInternalNode = new Node<CharType>(activeNode, activeTarget->startIndex, activePointIndex);//TODO check if +1 needed
-                                Node<CharType> *newLeaf = new Node<CharType>(newInternalNode, i, -1);//leaf that ends as before
-                                activeNode->addChild(text[activeEdgeIndex], newInternalNode);
-                                newInternalNode->addChild(text[i], newLeaf); //the new leaf starts with the next character that could not be matched
-                                newInternalNode->addChild(nextCharacter, activeTarget);// the edge into the old target of the activeEdge starts with the character that did not match the new character
-                                activeTarget->startIndex = activePointIndex;
-                                if (lastNewInternalNode != NULL) {
-                                    lastNewInternalNode->suffixLink = newInternalNode;
-                                }
-                                lastNewInternalNode = newInternalNode;
-                                newInternalNode->suffixLink = &root;
-                                if (activeNode != &root) {
-                                    activeNode = activeNode->suffixLink;
-                                } else {
-                                    activeEdgeIndex++;
-                                    activeLength--;
-                                }
-                                remaining--;// suffix was inserted
-                                std::cout << "    WWWWWWWWWWWWWWWWWW after:" << std::endl;
-                                print();
+                            //next character does not match, rule 2, add new internal node and split edge accordingly.
+                            std::cout << "    WWWWWWWWWWWWWWWWWW before:" << std::endl;
+                            print();
+                            std::cout << "    WWWWWWWWWWWWWWWWWW active point index :" << activePointIndex << std::endl;
+
+                            Node<CharType> *activeTarget = getActiveTarget();
+                            Node<CharType> *newInternalNode = new Node<CharType>(activeNode, activeTarget->startIndex, activePointIndex);//TODO check if +1 needed
+                            Node<CharType> *newLeaf = new Node<CharType>(newInternalNode, i, CurrentEndFlag);//leaf that ends as before
+                            activeNode->addChild(text[activeEdgeIndex], newInternalNode);
+                            newInternalNode->addChild(text[i], newLeaf); //the new leaf starts with the next character that could not be matched
+                            newInternalNode->addChild(nextCharacter, activeTarget);// the edge into the old target of the activeEdge starts with the character that did not match the new character
+                            activeTarget->startIndex = activePointIndex;
+                            if (lastNewInternalNode != NULL) {
+                                lastNewInternalNode->suffixLink = newInternalNode;
                             }
+                            lastNewInternalNode = newInternalNode;
+                            newInternalNode->suffixLink = &root;
+                            if (activeNode != &root) {
+                                activeNode = activeNode->suffixLink;
+                            } else {
+                                activeEdgeIndex++;
+                                activeLength--;
+                            }
+                            remaining--;// suffix was inserted
+                            std::cout << "    WWWWWWWWWWWWWWWWWW after:" << std::endl;
+                            print();
                         }
                     }
                 }
@@ -169,28 +187,29 @@ namespace UkkonenSuffixTree {
             std::cout << "******** Done with iteration " << i << std::endl;
         }
 
+        /**
+         * Walks down the current active point to make sure it is valid
+         */
         inline void walkDown(int i) {
             Node<CharType>* activeTarget = getActiveTarget();
+            if (activeTarget == NULL) return;
             const int activeEdgeSubstringLength = activeTarget->getSubstringLength(currentEnd);
             if (activeEdgeSubstringLength < activeLength) {
                 activeNode = activeTarget;
                 activeLength -= activeEdgeSubstringLength;
-                activeEdgeIndex = activeTarget->getChild(text[i])->startIndex;
-            } else {
-                activeLength++;
+                activeEdgeIndex = i;
+                //walkDown(i);
             }
         }
 
         inline Node<CharType>* getActiveTarget() const noexcept {
-            Node<CharType>* target = activeNode->getChild(text[activeEdgeIndex]);
-            //AssertMsg(target != NULL, "Active target does not exist.");
-            //std::cout << "   internally found active target " << target << std::endl;
-            return target;
+            return activeNode->getChild(text[activeEdgeIndex]);
         }
 
         inline int getActivePointIndex(int i) noexcept {
             //TODO make this non-recursive
             Node<CharType>* activeTarget = getActiveTarget();
+            if (activeTarget == NULL) return -1;
             const int activeEdgeStringLength = activeTarget->getSubstringLength(currentEnd);
             if (activeLength < activeEdgeStringLength) {// edge is sufficiently long, return from here
                 std::cout << " edge sufficiently long, return from there" << std::endl;
@@ -204,23 +223,16 @@ namespace UkkonenSuffixTree {
                 std::cout << " FAIL" << std::endl;
                 return -1;
             } else {
+                AssertMsg(false, "This should never happen. ActiveLength too large");
+                /*
                 std::cout << " skip edge" << std::endl;
                 //active edge is not long enough, skip it
                 activeNode = activeTarget;
-                activeLength = activeLength - activeEdgeStringLength;
-                activeEdgeIndex = activeEdgeIndex + activeEdgeStringLength;
+                activeLength -= activeEdgeStringLength;
+                activeEdgeIndex = i;
                 return getActivePointIndex(i);
+                 */
             }
-        }
-
-        inline std::pair<bool, CharType> getActivePointCharacter(int i) noexcept {
-            const int activePointIndex = getActivePointIndex(i);
-            if (activePointIndex == -1) {
-                return std::make_pair(false, '\0');
-            }
-            std::cout << "Found active point index " << activePointIndex << std::endl;
-            const CharType character = text[activePointIndex];
-            return std::make_pair(true, character);
         }
 
         inline void print() noexcept {
@@ -276,5 +288,4 @@ namespace UkkonenSuffixTree {
         Node<CharType>* lastNewInternalNode;
         int remaining;
     };
-
 }

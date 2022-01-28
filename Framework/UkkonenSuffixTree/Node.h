@@ -8,6 +8,7 @@ namespace UkkonenSuffixTree {
     class Node {
         using CharType = CHAR_TYPE;
         static const CharType NoEdge = 127;//TODO fix
+        static const int CurrentEndFlag = -1; //marks that an edges end is actually the global currentEnd
 
     public:
         Node(Node<CharType>* parent, int startIndex, int endIndex, Node<CharType>* suffixLink = NULL) :
@@ -15,8 +16,8 @@ namespace UkkonenSuffixTree {
                 startIndex(startIndex),
                 endIndex(endIndex),
                 suffixLink(suffixLink) {
-            AssertMsg(endIndex == 0 || endIndex == -1 || endIndex > startIndex, "Wrong node indices");
-            if (endIndex <= startIndex && endIndex != -1) {
+            AssertMsg(endIndex == 0 || endIndex == CurrentEndFlag || endIndex > startIndex, "Wrong node indices");
+            if (endIndex <= startIndex && endIndex != CurrentEndFlag) {
                 std::cout << "WRONG NODE INDICES [" << startIndex << ", " << endIndex << "), parent " << parent << std::endl;
             }
         }
@@ -28,13 +29,13 @@ namespace UkkonenSuffixTree {
 
         inline int getTextIndex(int offset, int currentEnd) const noexcept {
             int actualEndIndex = endIndex;
-            if (endIndex == -1) actualEndIndex = currentEnd;
+            if (endIndex == CurrentEndFlag) actualEndIndex = currentEnd;
             AssertMsg((offset >= 0 && startIndex + offset < actualEndIndex), "Offset is invalid.");
             return startIndex + offset;
         }
 
         inline int trueEndIndex(int currentEnd) const noexcept {
-            if (endIndex == -1) return currentEnd;
+            if (endIndex == CurrentEndFlag) return currentEnd;
             return endIndex;
         }
 
@@ -51,7 +52,7 @@ namespace UkkonenSuffixTree {
         }
 
         inline int getSubstringLength(int currentEnd) const noexcept {
-            if (endIndex == -1) { //ukkonen trick
+            if (endIndex == CurrentEndFlag) { //ukkonen trick
                 return currentEnd - startIndex;
             }
             return endIndex - startIndex;
