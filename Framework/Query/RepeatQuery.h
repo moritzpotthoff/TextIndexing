@@ -60,11 +60,11 @@ namespace Query {
             if constexpr (Debug) {
                 std::cout << std::endl << std::endl << std::endl << "Done with query preprocessing. Tree is:" << std::endl;
                 tree->root.print(4);
+                for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
+                    std::cout << "d=" << innerNode->stringDepth << ",c=" << tree->text[innerNode->startIndex] << std::endl;
+                }
+                std::cout << std::endl;
             }
-            for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
-                std::cout << "d=" << innerNode->stringDepth << ",c=" << tree->text[innerNode->startIndex] << std::endl;
-            }
-            std::cout << std::endl;
         }
 
         /**
@@ -78,11 +78,11 @@ namespace Query {
             //iterate over all inner nodes, they are already in sorted order.
             for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
                 profiler.startInnerNodePhase();
-                if constexpr (Debug || true) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
+                if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 //get all the suffixes below the inner node using the DP-merging approach described above
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
-                if constexpr (Debug || true) {
+                if constexpr (Debug) {
                     std::cout << "   Leaves below it are: " << innerNode->stringDepth << std::endl << "      ";
                     for (size_t i = 0; i < leaves.size(); i++) {
                         std::cout << leaves[i] << ", ";
@@ -97,13 +97,13 @@ namespace Query {
                 std::tie(foundSolution, startIndex) = findPair(leaves, innerNode->stringDepth);
                 profiler.endPairPhase();
                 if (foundSolution) {
-                    if constexpr (Debug || true) std::cout << "   Found solution at position " << startIndex << std::endl;
+                    if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
                     profiler.endInnerNodePhase();
                     profiler.endActualQuery();
                     //return solution
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
-                if constexpr (Debug || true) std::cout << "   Found no solution." << std::endl;
+                if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
                 profiler.endInnerNodePhase();
             }
             profiler.endActualQuery();

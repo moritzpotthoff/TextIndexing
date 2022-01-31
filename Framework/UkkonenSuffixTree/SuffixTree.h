@@ -45,7 +45,7 @@ namespace SuffixTree {
          * Creates a suffix tree using Ukkonen's algorithm for the given input.
          */
         inline void createSuffixTree() noexcept {
-            for (size_t i = 0; i < n; i++) { //start new phase for suffix i
+            for (int i = 0; i < n; i++) { //start new phase for suffix i
                 runPhase(i);
             }
             currentEnd++; //make sure ends are inclusive.

@@ -20,7 +20,7 @@ struct TopKQuery {
 };
 
 //Interactive flag. If true, generates a little more output than just the result line.
-static const bool Interactive = true;
+static const bool Interactive = false;
 //Debug flag. Generates extensive debug info.
 static const bool Debug = Interactive && false;
 using CharType = char;
@@ -70,7 +70,7 @@ inline static void handleTopKQuery(char *argv[]) {
     Query::TopKQuery<CharType, Sentinel, Query::TopKProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
-    stree.printSimple();
+    if constexpr (Interactive) stree.printSimple();
 
     size_t totalQueryTime = 0;
     Helpers::Timer queryTimer;
@@ -128,7 +128,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     Query::RepeatQuery<CharType, Sentinel, Query::RepeatProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
-    stree.printSimple();
+    if constexpr (Interactive) stree.printSimple();
 
     size_t startPosition, length;
     Helpers::Timer queryTimer;
@@ -167,11 +167,6 @@ int main(int argc, char *argv[]) {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
     }
-    /*
-    std::string inputText(argv[1]);
-    SuffixTree::SuffixTree<CharType, false> suffixTree(inputText.c_str(), inputText.length());
-    suffixTree.validate();
-    */
 
     return 0;
 }

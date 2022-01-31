@@ -12,8 +12,8 @@ namespace Query {
      * A Candidate represents a substring starting at startPosition that exists occurences times in the input text.
      */
     struct Candidate {
-        size_t occurences;
-        size_t startPosition;
+        int occurences;
+        int startPosition;
     };
 
     /**
@@ -49,7 +49,7 @@ namespace Query {
          * Runs a query for the given length l and finds the k-th most frequent substring.
          * Returns the start index of the substring.
          */
-        inline size_t runQuery(size_t l, size_t k) noexcept {
+        inline int runQuery(int l, int k) noexcept {
             profiler.startNewQuery();
             if constexpr (Debug) std::cout << "Running topk query with l = " << l << " and k = " << k << std::endl;
 
@@ -86,7 +86,7 @@ namespace Query {
             Candidate& solution = candidates[k - 1];
 
             if constexpr (Debug) {
-                size_t endIndex = solution.startPosition + l;//inclusively
+                int endIndex = solution.startPosition + l;//inclusively
                 std::cout << "Found suffix (" << solution.startPosition << ", " << endIndex << ") with #occ: " << solution.occurences << std::endl;
             }
             profiler.endReconstructSolution();
@@ -108,7 +108,7 @@ namespace Query {
          *  - If (and only if, see above) a node is scanned that does not have sufficient string depth yet, all its children need to be explored as well.
          *
          */
-        inline void collectingBfs(std::vector<Candidate>& candidates, const size_t length) const noexcept {
+        inline void collectingBfs(std::vector<Candidate>& candidates, const int length) const noexcept {
             //Use a queue to preserve the suffix ordering from the suffix tree. This is necessary to get lexicographic ordering.
             std::queue<SuffixTree::Node<CharType>*> queue;
             queue.push(&tree->root);
@@ -147,7 +147,7 @@ namespace Query {
          *
          *  Returns numberOfLeaves.
          */
-        inline size_t countingDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {
+        inline int countingDfs(SuffixTree::Node<CharType>* node, int depth) noexcept {
             //TODO avoid recursion?
             //This node has stringDepth of depth + its own length.
             node->stringDepth = depth + *node->endIndex - node->startIndex;

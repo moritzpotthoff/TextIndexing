@@ -74,11 +74,11 @@ namespace SuffixTree {
         Node<CharType>* suffixLink;
         std::map<CharType, Node<CharType>*> children;
         //Number of leaves in the subtree rooted at this node. Only used by queries.
-        size_t numberOfLeaves;
+        int numberOfLeaves;
         //String depth of this node (including its own incoming edge). Only used by queries.
-        size_t stringDepth;
+        int stringDepth;
         //For leaves, the suffix that this node represents. For inner nodes in queries, the suffix that one of its leaves represents.
-        size_t representedSuffix;
+        int representedSuffix;
     };
 
 }
