@@ -16,6 +16,8 @@ namespace Query {
         inline void startPairPhase() const noexcept {}
         inline void endPairPhase() const noexcept {}
         inline void print() const noexcept {}
+        inline void startMergePhase() const noexcept {}
+        inline void endMergePhase() const noexcept {}
     };
 
     class RepeatProfiler {
@@ -59,7 +61,7 @@ namespace Query {
         }
 
         inline void endInnerNodePhase() noexcept {
-            totalInnerNodePhaseTime += innerNodePhaseTimer.getMilliseconds();
+            totalInnerNodePhaseTime += innerNodePhaseTimer.getMicroseconds();
         }
 
         inline void startPairPhase() noexcept {
@@ -68,7 +70,16 @@ namespace Query {
         }
 
         inline void endPairPhase() noexcept {
-            totalPairTime += pairTimer.getMilliseconds();
+            totalPairTime += pairTimer.getMicroseconds();
+        }
+
+        inline void startMergePhase() noexcept {
+            numberOfMerges++;
+            mergeTimer.restart();
+        }
+
+        inline void endMergePhase() noexcept {
+            totalMergeTime += mergeTimer.getMicroseconds();
         }
 
         inline void print() const noexcept {
@@ -78,8 +89,9 @@ namespace Query {
             std::cout << "    -- string depth:        " << stringDepthTime << "ms" << std::endl;
             std::cout << "    -- collect inner nodes: " << collectInnerNodesTime << "ms" << std::endl;
             std::cout << "  Total actual query time:  " << actualQueryTime << "ms" << std::endl;
-            std::cout << "    -- inner node phases:   " << totalInnerNodePhaseTime << "ms (" << numberOfInnerNodePhases << " * " << (totalInnerNodePhaseTime / (double) numberOfInnerNodePhases) << ")." << std::endl;
-            std::cout << "    -- pair calls:          " << totalPairTime << "ms (" << numberOfPairCalls << " * " << (totalPairTime / (double) numberOfPairCalls) << ")." << std::endl;
+            std::cout << "    -- inner node phases:   " << totalInnerNodePhaseTime/1000 << "ms (" << numberOfInnerNodePhases << " * " << (totalInnerNodePhaseTime / (double) numberOfInnerNodePhases) << "microseconds)." << std::endl;
+            std::cout << "    -- pair calls:          " << totalPairTime/1000 << "ms (" << numberOfPairCalls << " * " << (totalPairTime / (double) numberOfPairCalls) << "microseconds)." << std::endl;
+            std::cout << "    -- merge time:          " << totalMergeTime/1000 << "ms (" << numberOfMerges << " * " << (totalMergeTime / (double) numberOfMerges) << "microseconds)." << std::endl;
         }
 
     private:
@@ -88,14 +100,17 @@ namespace Query {
         Helpers::Timer actualQueryTimer;
         Helpers::Timer innerNodePhaseTimer;
         Helpers::Timer pairTimer;
+        Helpers::Timer mergeTimer;
 
         size_t stringDepthTime;
         size_t collectInnerNodesTime;
         size_t actualQueryTime;
         size_t totalInnerNodePhaseTime;
         size_t totalPairTime;
+        size_t totalMergeTime;
 
         size_t numberOfInnerNodePhases;
         size_t numberOfPairCalls;
+        size_t numberOfMerges;
     };
 }

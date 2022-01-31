@@ -55,8 +55,8 @@ namespace Query {
 
             profiler.startCollectCandidates();
             std::vector<Candidate> candidates;
-            //Avoid reallocation. n/10 is a rough estimate that worked well in my evaluations.
-            candidates.reserve(tree->n / 10);
+            //Avoid reallocation by reserving for as many candidates as are possible.
+            candidates.reserve(tree->n);
             //Collect all relevant candidates for the given length.
             collectingBfs(candidates, l);
             //The reserve() call above typically increases the vector size unnecessarily (by a lot).
@@ -69,6 +69,8 @@ namespace Query {
             //Candidates now has entries (#occurences, starting position). These were added in suffix tree order and therefore, they are lexicographically sorted.
             //By stable-sorting them by the #occurences (only, i.e. not also by the starting position!) we get them ordered by #occurences.
             //Due to stable-sort and the previous lexicographic order, lexicographically smaller elements are favored in case of equal #occurences.
+            //Of course, it is not really necessary to sort the entire vector. It would be theoretically more efficient to use a top-k max heap, but
+            //my profiling shows that this step only takes around 5% of the query time, so I chose not to do that.
             std::stable_sort(candidates.begin(), candidates.end(), [](const Candidate& left, const Candidate& right){
                 return left.occurences > right.occurences;
             });
@@ -148,7 +150,6 @@ namespace Query {
          *  Returns numberOfLeaves.
          */
         inline int countingDfs(SuffixTree::Node<CharType>* node, int depth) noexcept {
-            //TODO avoid recursion?
             //This node has stringDepth of depth + its own length.
             node->stringDepth = depth + *node->endIndex - node->startIndex;
             //calculate a possible suffix that is represented by this node.

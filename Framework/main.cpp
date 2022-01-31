@@ -20,7 +20,7 @@ struct TopKQuery {
 };
 
 //Interactive flag. If true, generates a little more output than just the result line.
-static const bool Interactive = false;
+static const bool Interactive = true;
 //Debug flag. Generates extensive debug info.
 static const bool Debug = Interactive && false;
 using CharType = char;
@@ -62,7 +62,7 @@ inline static void handleTopKQuery(char *argv[]) {
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
     SuffixTree::SuffixTree<CharType, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
-    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
+    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
@@ -70,7 +70,7 @@ inline static void handleTopKQuery(char *argv[]) {
     Query::TopKQuery<CharType, Sentinel, Query::TopKProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
-    if constexpr (Interactive) stree.printSimple();
+    if constexpr (Debug) stree.printSimple();
 
     size_t totalQueryTime = 0;
     Helpers::Timer queryTimer;
@@ -119,16 +119,17 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Generate the suffix tree.
 
     SuffixTree::SuffixTree<CharType, Debug> stree(inputText.c_str(), inputText.length());
-    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
+    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
+    if constexpr (Interactive) std::cout << "Preprocessing done." << std::endl;
     //Again, query initialization time will be measured as preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
-    Query::RepeatQuery<CharType, Sentinel, Query::RepeatProfiler, Debug> query(&stree);
+    Query::RepeatQuery<CharType, Sentinel, Query::RepeatNoProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
-    if constexpr (Interactive) stree.printSimple();
+    if constexpr (Debug) stree.printSimple();
 
     size_t startPosition, length;
     Helpers::Timer queryTimer;

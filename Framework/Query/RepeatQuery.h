@@ -54,6 +54,7 @@ namespace Query {
             profiler.startStringDepth();
             calculateStringDepths();
             profiler.endStringDepth();
+            //collect all inner nodes in sorted order
             profiler.startCollectInnerNodes();
             collectInnerNodes();
             profiler.endCollectInnerNodes();
@@ -80,8 +81,10 @@ namespace Query {
                 profiler.startInnerNodePhase();
                 if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 //get all the suffixes below the inner node using the DP-merging approach described above
+                profiler.startMergePhase();
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
+                profiler.endMergePhase();
                 if constexpr (Debug) {
                     std::cout << "   Leaves below it are: " << innerNode->stringDepth << std::endl << "      ";
                     for (size_t i = 0; i < leaves.size(); i++) {
@@ -89,18 +92,16 @@ namespace Query {
                     }
                     std::cout << std::endl;
                 }
-                //leaves are already sorted
-                bool foundSolution;
-                size_t startIndex;
                 profiler.startPairPhase();
-                //find a pair of suffix indices below innerNode whose difference is the innerNode's string depth
-                std::tie(foundSolution, startIndex) = findPair(leaves, innerNode->stringDepth);
+                //find a pair of suffix indices below innerNode whose difference is the innerNode's string depth.
+                int startIndex = findPair(leaves, innerNode->stringDepth);
                 profiler.endPairPhase();
-                if (foundSolution) {
+                if (startIndex != -1) {
                     if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
                     profiler.endInnerNodePhase();
                     profiler.endActualQuery();
-                    //return solution
+                    //return solution; since we consider inner nodes by descending string depth, the first inner node with an
+                    //appropriate pair of suffixes below it is the solution; return the start index and the length.
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
                 if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
@@ -115,23 +116,31 @@ namespace Query {
          *
          * Returns if a result was found and the lexicographically smaller suffix index
          */
-        inline std::pair<bool, size_t> findPair(std::vector<size_t> &leaves, size_t difference) const noexcept {
-            // https://www.geeksforgeeks.org/find-a-pair-with-the-given-difference/
-            //TODO explain algorithm better
+        inline int findPair(std::vector<size_t> &leaves, size_t difference) const noexcept {
+            /**
+             * Instead of the simple O(n log n)-approach (for each element, binary-search for the counterpart),
+             * I use this O(n) algorithm that I found at
+             *      https://www.geeksforgeeks.org/find-a-pair-with-the-given-difference/ (last accessed: 01/31/2022)
+             *
+             */
+            //two pointers into the vector
             size_t i = 0;
             size_t j = 1;
 
+            //iterate over the input, as long as no pointer has reached the end
             while (i < leaves.size() && j < leaves.size()) {
-                if (i != j && (leaves[std::max(i, j)] - leaves[std::min(i, j)] == difference )) {
+                //if we have a pair with the desired difference, return it. If there are other possibilities, those are irrelevant.
+                if (i != j && (leaves[i] - leaves[j] == difference || leaves[j] - leaves[i] == difference)) {
                     //found a pair, return first index
-                    return std::make_pair(true, leaves[std::min(i, j)]);
-                } else if (leaves[j] - leaves[i] < difference) {
+                    return leaves[std::min(i, j)];
+                } else if (leaves[j] - leaves[i] < difference) { //the difference of the two values is smaller than the desired value, we need to increase the left value, therefore increase j
                     j++;
-                } else {
+                } else { //increase i
                     i++;
                 }
             }
-            return std::make_pair(false, 0);
+            //no result found, return dummy instead.
+            return -1;
         }
 
         /**
@@ -167,8 +176,13 @@ namespace Query {
             }
         }
 
+        /**
+         * Collects all inner nodes in the tree sorted by string depth and lexicographically.
+         */
         inline void collectInnerNodes() noexcept {
+            //reserve sufficient space to avoid reallocation
             sortedInnerNodes.reserve(tree->n);
+            //start bfs in the tree (needed to preserve lexicographic order)
             std::queue<SuffixTree::Node<CharType>*> queue;
             queue.push(&tree->root);
             while (!queue.empty()) {
@@ -177,29 +191,37 @@ namespace Query {
                 if (node->hasChildren()) {
                     //inner node, enter as inner node
                     sortedInnerNodes.emplace_back(node);
+                    //enqueue the children
                     for (const auto & [key, child] : node->children) {
                         queue.push(child);
                     }
                 }
                 //nothing to do for leaves
             }
-            //stable-sort by suffix depths
+            //reduce container size to save some time during stable-sort
             sortedInnerNodes.shrink_to_fit();
+            //stable-sort by suffix depths (descending), stable-sort to preserve lexicographic ordering
             std::stable_sort(sortedInnerNodes.begin(), sortedInnerNodes.end(), [](const SuffixTree::Node<CharType>* left, const SuffixTree::Node<CharType>* right){
                 return left->stringDepth > right->stringDepth;
             });
-            for (size_t i = 0; i < sortedInnerNodes.size(); i++) {
-                sortedInnerNodes[i]->representedSuffix = i;
-            }
+            //prepare DP-memory container size
             suffixesBelowInnerNode.resize(sortedInnerNodes.size());
         }
 
+        /**
+         * Annotates every node with its string depth.
+         */
         inline void calculateStringDepths() noexcept {
             stringDepthDfs(&tree->root, 0);
         }
 
+        /**
+         * Recursively annotates each node with its string depth using depth first search.
+         *
+         * Annotates each node with the suffix it represents. That will be used as ID  to access
+         * the precomputed list of suffixes below inner nodes during the dynamic program part.
+         */
         inline void stringDepthDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {
-            //TODO avoid recursion?
             node->stringDepth = depth + *node->endIndex - node->startIndex;
             node->representedSuffix = *node->endIndex - node->stringDepth;
             for (const auto & [key, child] : node->children) {
@@ -209,7 +231,10 @@ namespace Query {
 
     public:
         SuffixTree::SuffixTree<CharType, Debug>* tree;
+        //List of all inner nodes, sorted by their string depths
         std::vector<SuffixTree::Node<CharType>*> sortedInnerNodes;
+        //Memory-vector for the dynamic program for suffix-collection.
+        //If it was computed, the list of suffixes for an innerNode is accessible at suffixesBelowInnerNode[innerNode->representedSuffix]
         std::vector<std::vector<size_t>> suffixesBelowInnerNode;
 
         Profiler profiler;

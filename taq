@@ -1,0 +1,77 @@
+[1mdiff --git a/Framework/Query/RepeatQuery.h b/Framework/Query/RepeatQuery.h[m
+[1mindex e0ef1c6..edce7f9 100644[m
+[1m--- a/Framework/Query/RepeatQuery.h[m
+[1m+++ b/Framework/Query/RepeatQuery.h[m
+[36m@@ -81,7 +81,7 @@[m [mnamespace Query {[m
+                 if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;[m
+                 //get all the suffixes below the inner node using the DP-merging approach described above[m
+                 collectSuffixesBelow(innerNode);[m
+[31m-                std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];[m
+[32m+[m[32m                std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix()];[m
+                 if constexpr (Debug) {[m
+                     std::cout << "   Leaves below it are: " << innerNode->stringDepth << std::endl << "      ";[m
+                     for (size_t i = 0; i < leaves.size(); i++) {[m
+[36m@@ -149,11 +149,11 @@[m [mnamespace Query {[m
+         inline void collectSuffixesBelow(SuffixTree::Node<CharType>* innerNode) noexcept {[m
+             std::vector<size_t> suffixes;[m
+             //index of the list in suffixesBelowInnerNode that the list must be stored in[m
+[31m-            const size_t currentIndex = innerNode->representedSuffix;[m
+[32m+[m[32m            const size_t currentIndex = innerNode->representedSuffix();[m
+             for (const auto & [key, child] : innerNode->children) {[m
+                 if (child->hasChildren()) {[m
+                     //child is inner node, reuse previously generated list and merge with current list[m
+[31m-                    const size_t childIndex = child->representedSuffix;[m
+[32m+[m[32m                    const size_t childIndex = child->representedSuffix();[m
+                     suffixes.clear();[m
+                     //merge the two lists into suffixes[m
+                     std::merge(suffixesBelowInnerNode[currentIndex].begin(), suffixesBelowInnerNode[currentIndex].end(), suffixesBelowInnerNode[childIndex].begin(), suffixesBelowInnerNode[childIndex].end(), std::back_inserter(suffixes));[m
+[36m@@ -162,7 +162,7 @@[m [mnamespace Query {[m
+                     std::copy(suffixes.begin(), suffixes.end(), std::back_inserter(suffixesBelowInnerNode[currentIndex]));[m
+                 } else {[m
+                     //child is leaf, insert its suffix only.[m
+[31m-                    suffixesBelowInnerNode[currentIndex].insert(std::upper_bound(suffixesBelowInnerNode[currentIndex].begin(), suffixesBelowInnerNode[currentIndex].end(), child->representedSuffix), child->representedSuffix);[m
+[32m+[m[32m                    suffixesBelowInnerNode[currentIndex].insert(std::upper_bound(suffixesBelowInnerNode[currentIndex].begin(), suffixesBelowInnerNode[currentIndex].end(), child->representedSuffix()), child->representedSuffix());[m
+                 }[m
+             }[m
+         }[m
+[36m@@ -201,7 +201,6 @@[m [mnamespace Query {[m
+         inline void stringDepthDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {[m
+             //TODO avoid recursion?[m
+             node->stringDepth = depth + *node->endIndex - node->startIndex;[m
+[31m-            node->representedSuffix = *node->endIndex - node->stringDepth;[m
+             for (const auto & [key, child] : node->children) {[m
+                 stringDepthDfs(child, node->stringDepth);[m
+             }[m
+[1mdiff --git a/Framework/UkkonenSuffixTree/Node.h b/Framework/UkkonenSuffixTree/Node.h[m
+[1mindex 7727e80..a8d64b6 100644[m
+[1m--- a/Framework/UkkonenSuffixTree/Node.h[m
+[1m+++ b/Framework/UkkonenSuffixTree/Node.h[m
+[36m@@ -43,6 +43,10 @@[m [mnamespace SuffixTree {[m
+             return *endIndex - startIndex;[m
+         }[m
+ [m
+[32m+[m[32m        inline int representedSuffix() const noexcept {[m
+[32m+[m[32m            return *endIndex - stringDepth;[m
+[32m+[m[32m        }[m
+[32m+[m
+         inline bool hasChildren() const noexcept {[m
+             return !children.empty();[m
+         }[m
+[36m@@ -63,8 +67,6 @@[m [mnamespace SuffixTree {[m
+             }[m
+         }[m
+ [m
+[31m-[m
+[31m-[m
+     public:[m
+         int startIndex;//inclusive[m
+         int* endIndex;//exclusive[m
+[36m@@ -74,8 +76,6 @@[m [mnamespace SuffixTree {[m
+         int numberOfLeaves;[m
+         //String depth of this node (including its own incoming edge). Only used by queries.[m
+         int stringDepth;[m
+[31m-        //For leaves, the suffix that this node represents. For inner nodes in queries, the suffix that one of its leaves represents.[m
+[31m-        int representedSuffix;[m
+     };[m
+ [m
+ }[m

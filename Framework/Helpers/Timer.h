@@ -16,6 +16,11 @@ namespace Helpers {
             return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
 
+        inline size_t getMicroseconds() {
+            std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
+            return std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+        }
+
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> start;
     };
