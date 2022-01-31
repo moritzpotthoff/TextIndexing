@@ -5,8 +5,8 @@
 #include <queue>
 #include <algorithm>
 
-#include "../NaiveSuffixTree/SuffixTree.h"
-#include "../NaiveSuffixTree/Node.h"
+#include "../UkkonenSuffixTree/SuffixTree.h"
+#include "../UkkonenSuffixTree/Node.h"
 
 namespace Query {
     /**
@@ -47,7 +47,7 @@ namespace Query {
          * generation if my suffix tree would be used only for this query type.
          * Therefore, they are here and counted as preprocessing time.
          */
-        RepeatQuery(NaiveSuffixTree::SuffixTree<CharType, Debug>* tree) :
+        RepeatQuery(SuffixTree::SuffixTree<CharType, Debug>* tree) :
             tree(tree) {
             //precompute number of leaves under each node.
             profiler.startStringDepth();
@@ -71,7 +71,7 @@ namespace Query {
         inline std::pair<size_t, size_t> runQuery() noexcept {
             profiler.startActualQuery();
             //iterate over all inner nodes, they are already in sorted order.
-            for (NaiveSuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
+            for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
                 profiler.startInnerNodePhase();
                 if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 //get all the suffixes below the inner node using the DP-merging approach described above
@@ -141,7 +141,7 @@ namespace Query {
          *
          * The resulting list will be stored into suffixesb
          */
-        inline void collectSuffixesBelow(NaiveSuffixTree::Node<CharType>* innerNode) noexcept {
+        inline void collectSuffixesBelow(SuffixTree::Node<CharType>* innerNode) noexcept {
             std::vector<size_t> suffixes;
             //index of the list in suffixesBelowInnerNode that the list must be stored in
             const size_t currentIndex = innerNode->representedSuffix;
@@ -164,10 +164,10 @@ namespace Query {
 
         inline void collectInnerNodes() noexcept {
             sortedInnerNodes.reserve(tree->n);
-            std::queue<NaiveSuffixTree::Node<CharType>*> queue;
+            std::queue<SuffixTree::Node<CharType>*> queue;
             queue.push(&tree->root);
             while (!queue.empty()) {
-                NaiveSuffixTree::Node<CharType>* node = queue.front();
+                SuffixTree::Node<CharType>* node = queue.front();
                 queue.pop();
                 if (node->hasChildren()) {
                     //inner node, enter as inner node
@@ -180,7 +180,7 @@ namespace Query {
             }
             //stable-sort by suffix depths
             sortedInnerNodes.shrink_to_fit();
-            std::stable_sort(sortedInnerNodes.begin(), sortedInnerNodes.end(), [](const NaiveSuffixTree::Node<CharType>* left, const NaiveSuffixTree::Node<CharType>* right){
+            std::stable_sort(sortedInnerNodes.begin(), sortedInnerNodes.end(), [](const SuffixTree::Node<CharType>* left, const SuffixTree::Node<CharType>* right){
                 return left->stringDepth > right->stringDepth;
             });
             for (size_t i = 0; i < sortedInnerNodes.size(); i++) {
@@ -193,17 +193,17 @@ namespace Query {
             stringDepthDfs(&tree->root, 0);
         }
 
-        inline void stringDepthDfs(NaiveSuffixTree::Node<CharType>* node, size_t depth) noexcept {
+        inline void stringDepthDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {
             //TODO avoid recursion?
-            node->stringDepth = depth + node->endIndex - node->startIndex;
+            node->stringDepth = depth + *node->endIndex - node->startIndex;
             for (const auto & [key, child] : node->children) {
                 stringDepthDfs(child, node->stringDepth);
             }
         }
 
     public:
-        NaiveSuffixTree::SuffixTree<CharType, Debug>* tree;
-        std::vector<NaiveSuffixTree::Node<CharType>*> sortedInnerNodes;
+        SuffixTree::SuffixTree<CharType, Debug>* tree;
+        std::vector<SuffixTree::Node<CharType>*> sortedInnerNodes;
         std::vector<std::vector<size_t>> suffixesBelowInnerNode;
 
         Profiler profiler;

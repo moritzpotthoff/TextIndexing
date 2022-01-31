@@ -4,8 +4,8 @@
 #include <bits/stdc++.h>
 #include <queue>
 
-#include "../NaiveSuffixTree/SuffixTree.h"
-#include "../NaiveSuffixTree/Node.h"
+#include "../UkkonenSuffixTree/SuffixTree.h"
+#include "../UkkonenSuffixTree/Node.h"
 
 namespace Query {
     /**
@@ -35,7 +35,7 @@ namespace Query {
         /**
          * Generates a new query and already does some additional preprocessing on the suffix tree that will be needed later.
          */
-        TopKQuery(NaiveSuffixTree::SuffixTree<CharType, Debug>* tree) :
+        TopKQuery(SuffixTree::SuffixTree<CharType, Debug>* tree) :
             tree(tree) {
             profiler.startInitialization();
             //Additional precomputations that are necessary for the topK queries. Needs to be done only once for all queries.
@@ -109,10 +109,10 @@ namespace Query {
          */
         inline void collectingBfs(std::vector<Candidate>& candidates, const size_t length) const noexcept {
             //Use a queue to preserve the suffix ordering from the suffix tree. This is necessary to get lexicographic ordering.
-            std::queue<NaiveSuffixTree::Node<CharType>*> queue;
+            std::queue<SuffixTree::Node<CharType>*> queue;
             queue.push(&tree->root);
             while (!queue.empty()) {
-                const NaiveSuffixTree::Node<CharType>* node = queue.front();
+                const SuffixTree::Node<CharType>* node = queue.front();
                 queue.pop();
                 if (node->stringDepth >= length) {
                     //If this node has at least level l add the relevant candidate.
@@ -146,14 +146,16 @@ namespace Query {
          *
          *  Returns numberOfLeaves.
          */
-        inline size_t countingDfs(NaiveSuffixTree::Node<CharType>* node, size_t depth) noexcept {
+        inline size_t countingDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {
             //TODO avoid recursion?
             //This node has stringDepth of depth + its own length.
-            node->stringDepth = depth + node->endIndex - node->startIndex;
+            node->stringDepth = depth + *node->endIndex - node->startIndex;
+            //calculate a possible suffix that is represented by this node.
+            //endIndex - stringDepth is the start position of one of the suffixes represented by leaves below this node.
+            node->representedSuffix = *node->endIndex - node->stringDepth;
             if (node->hasChildren()) {
-                //node is inner node, first, calculate a possible suffix that is represented by this node.
-                //endIndex - stringDepth is the start position of one of the suffixes represented by leaves below this node.
-                node->representedSuffix = node->endIndex - node->stringDepth;
+                //remove all $ leaves, but count them as children because they represent suffixes, too.
+                node->numberOfLeaves = node->children.erase('$');
                 //Recursive dfs calls for all children. Simultaneously, calculate the number of leaves below this node.
                 for (const auto & [key, child] : node->children) {
                     node->numberOfLeaves += countingDfs(child, node->stringDepth);
@@ -167,7 +169,7 @@ namespace Query {
         }
 
     public:
-        NaiveSuffixTree::SuffixTree<CharType, Debug>* tree;
+        SuffixTree::SuffixTree<CharType, Debug>* tree;
 
         //Used solely for optimization.
         Profiler profiler;

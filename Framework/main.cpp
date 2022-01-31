@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "NaiveSuffixTree/SuffixTree.h"
+//#include "NaiveSuffixTree/SuffixTree.h"
 #include "Query/TopKQuery.h"
 #include "Query/RepeatQuery.h"
 #include "Helpers/Timer.h"
@@ -57,15 +57,17 @@ inline static void handleTopKQuery(char *argv[]) {
     Helpers::Timer preprocessingTimer;
     //Generate the suffix tree for the input.
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
-    NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
+    SuffixTree::SuffixTree<char, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
-    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
+    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
     Query::TopKQuery<char, Query::TopKProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
+
+    stree.printSimple();
 
     size_t totalQueryTime = 0;
     Helpers::Timer queryTimer;
@@ -112,7 +114,7 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Measure the preprocessing time.
     Helpers::Timer preprocessingTimer;
     //Generate the suffix tree.
-    NaiveSuffixTree::SuffixTree<char, Debug> stree(inputText.c_str(), inputText.length());
+    SuffixTree::SuffixTree<char, Debug> stree(inputText.c_str(), inputText.length());
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
 
     //Again, query initialization time will be measured as preprocessing time.
@@ -144,7 +146,6 @@ inline static void handleRepeatQuery(char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-    /*
     if (argc != 3) {
         std::cout << "Wrong number of arguments, expecting 2 arguments." << std::endl;
         return 1;
@@ -159,11 +160,11 @@ int main(int argc, char *argv[]) {
         std::cout << "Unknown query choice." << std::endl;
         return 1;
     }
-     */
-
+    /*
     std::string inputText(argv[1]);
-    UkkonenSuffixTree::SuffixTree<char, true> suffixTree(inputText.c_str(), inputText.length());
-
+    SuffixTree::SuffixTree<char, false> suffixTree(inputText.c_str(), inputText.length());
+    suffixTree.validate();
+    */
 
     return 0;
 }

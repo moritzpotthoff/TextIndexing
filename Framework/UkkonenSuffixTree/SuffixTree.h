@@ -5,7 +5,7 @@
 
 #include "Node.h"
 
-namespace UkkonenSuffixTree {
+namespace SuffixTree {
 
     /**
      * Creates a Suffix Tree using Ukkonen's algorithm.
@@ -14,12 +14,11 @@ namespace UkkonenSuffixTree {
     class SuffixTree {
         using CharType = CHAR_TYPE;
         static const bool Debug = DEBUG;
-        static const int CurrentEndFlag = -1; //marks that an edges end is actually the global currentEnd
 
     public:
         SuffixTree(const CharType* input, int n) :
                 text(input),
-                root(NULL, 0, 0, NULL),
+                root(NULL, 0, NULL, NULL),
                 currentEnd(0),
                 n(n),
                 activeEdgeIndex(0),
@@ -28,15 +27,18 @@ namespace UkkonenSuffixTree {
                 lastNewInternalNode(NULL),
                 remaining(0) {
             if constexpr (Debug) std::cout << "Created new suffix tree with length " << n << std::endl;
+            root.endIndex = new int(0);
             root.parent = &root;
             activeNode = &root;
 
             createSuffixTree();
 
-            std::cout << std::endl << std::endl << std::endl;
-            print();
-            std::cout << std::endl << std::endl << std::endl;
-            validate();
+            if constexpr (Debug) {
+                std::cout << std::endl << std::endl << std::endl;
+                print();
+                std::cout << std::endl << std::endl << std::endl;
+                validate();
+            }
         }
 
         /**
@@ -46,194 +48,95 @@ namespace UkkonenSuffixTree {
             for (size_t i = 0; i < n; i++) { //start new phase for suffix i
                 runPhase(i);
             }
+            currentEnd++; //make sure ends are inclusive.
         }
 
         /**
          * Runs phase i (for new character text[i]) of Ukkonen's algorithm.
          */
         inline void runPhase(int i) {
-            std::cout << "********* Starting phase " << i << std::endl;
+            if constexpr (Debug)std::cout << "********* Starting phase " << i << std::endl;
             lastNewInternalNode = NULL; //reset, only valid per phase
-            currentEnd++; //automatically extend all existing suffixes
+            currentEnd = i; //automatically extend all existing suffixes
             remaining++; //mark that one more suffix must be added
 
             //As long as there are suffixes that need to be inserted, insert them
             while (remaining > 0) {
-                walkDown(i);
-                std::cout << "-------- RUNNING NEW SUFFIX IN ITERATION " << i << std::endl;
-                print();
+                if constexpr (Debug) std::cout << "-------- RUNNING NEW SUFFIX IN ITERATION " << i << std::endl;
+                if constexpr (Debug) print();
                 if (activeLength == 0) {
-                    // active length 0, start search for text[i] at activeNode
-                    std::cout << "Active length is 0, start search at activeNode " << activeNode << std::endl;
-                    Node<CharType>* child = activeNode->getChild(text[i]);
-                    if (child != NULL) {
-                        std::cout << "  Active node has child for new character, update active point and break" << std::endl;
-                        //activeNode has child for text[i], update active point
-                        activeEdgeIndex = i;
-                        activeLength++;
-                        walkDown(i);
-                        break; //extended by rule three, that ends this phase
-                    } else {
-                        std::cout << "  Active node has no matching edge, create new leaf." << std::endl;
-                        //activeNode has no matching edge, create new leaf with current character as child from activeNode
-                        Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, CurrentEndFlag);
-                        /*if (!activeNode->hasChildren()) {
-                            //was leaf, now got internal node
-                            if (lastNewInternalNode != NULL) {
-                                lastNewInternalNode->suffixLink = activeNode;
-                            }
-                            lastNewInternalNode = activeNode;
-                        }*/
-                        activeNode->addChild(text[i], newLeaf);
-                        remaining--;//suffix was inserted
-                        std::cout << "  New leaf " << newLeaf << " created" << std::endl;
+                    activeEdgeIndex = i;
+                }
+
+                Node<CharType>* activeTarget = getActiveTarget();
+                if (activeTarget == NULL) {
+                    //there is no correct outgoing edge from activeNode, create new leaf
+                    Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, &currentEnd, &root);
+                    activeNode->addChild(text[activeEdgeIndex], newLeaf);
+
+                    if (lastNewInternalNode != NULL) {
+                        lastNewInternalNode->suffixLink = activeNode;
+                        lastNewInternalNode = NULL;
                     }
                 } else {
-                    // active length > 0, character must be found at the current active position
-                    const int activePointIndex = getActivePointIndex(i);
-                    bool sufficientPath = (activePointIndex != -1);//get next character that would be found after the current active position
-
-                    if (!sufficientPath) {
-                        //active point is beyond the end of the path, need to add a new leaf to the path
-                        Node<CharType>* parent = getActiveTarget();
-                        if (parent == NULL) parent = activeNode;
-                        Node<CharType>* newLeaf = new Node<CharType>(parent, i, CurrentEndFlag);
-                        parent->addChild(text[i], newLeaf);
-
-                        if (lastNewInternalNode != NULL) {
-                            lastNewInternalNode->suffixLink = parent;
-                        }
-                        lastNewInternalNode = parent;
-
-                        if (activeNode != &root) {
-                            activeNode = activeNode->suffixLink;
-                        } else {
-                            activeEdgeIndex++;
-                            activeLength--;
-                        }
-                        remaining--;
-                    } else {
-                        CharType nextCharacter = text[activePointIndex];
-                        std::cout << "  Active length not 0, start search. Next character is " << nextCharacter << std::endl;
-
-                        if (nextCharacter == text[i]) { // the next character is a match
-                            std::cout << "    Next character is a match, walk down and break" << std::endl;
-                            if (lastNewInternalNode != NULL) {
-                                lastNewInternalNode->suffixLink = getActiveTarget();
-                            }
-                            activeLength++;
-                            walkDown(i);
-                            break;
-                        } else {
-                            std::cout << "    next character does not match, split edge." << std::endl;
-
-                            if (activeLength == 0) {
-                                AssertMsg(false, "This should never happen. ActiveLength == 0");
-                            }
-                            /*
-                                std::cout << "XYZXYZXYZ Active length is 0, start search at activeNode " << activeNode << std::endl;
-                                Node<CharType>* child = activeNode->getChild(text[i]);
-                                if (child != NULL) {
-                                    std::cout << "  Active node has child for new character, update active point and break" << std::endl;
-                                    //activeNode has child for text[i], update active point
-                                    activeEdgeIndex = child->startIndex;
-                                    activeLength++;
-                                    walkDown(i);
-                                    break; //extended by rule three, that ends this phase
-                                } else {
-                                    std::cout << "  Active node has no matching edge, create new leaf." << std::endl;
-                                    //activeNode has no matching edge, create new leaf with current character as child from activeNode
-                                    Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, CurrentEndFlag);
-
-                                    activeNode->addChild(text[i], newLeaf);
-                                    remaining--;//suffix was inserted
-                                    std::cout << "  New leaf " << newLeaf << " created" << std::endl;
-                                }
-                                activeNode = &root;
-                                activeLength = 0;
-                                activeEdgeIndex = 0;
-                            */
-
-                            //next character does not match, rule 2, add new internal node and split edge accordingly.
-                            std::cout << "    WWWWWWWWWWWWWWWWWW before:" << std::endl;
-                            print();
-                            std::cout << "    WWWWWWWWWWWWWWWWWW active point index :" << activePointIndex << std::endl;
-
-                            Node<CharType> *activeTarget = getActiveTarget();
-                            Node<CharType> *newInternalNode = new Node<CharType>(activeNode, activeTarget->startIndex, activePointIndex);//TODO check if +1 needed
-                            Node<CharType> *newLeaf = new Node<CharType>(newInternalNode, i, CurrentEndFlag);//leaf that ends as before
-                            activeNode->addChild(text[activeEdgeIndex], newInternalNode);
-                            newInternalNode->addChild(text[i], newLeaf); //the new leaf starts with the next character that could not be matched
-                            newInternalNode->addChild(nextCharacter, activeTarget);// the edge into the old target of the activeEdge starts with the character that did not match the new character
-                            activeTarget->startIndex = activePointIndex;
-                            if (lastNewInternalNode != NULL) {
-                                lastNewInternalNode->suffixLink = newInternalNode;
-                            }
-                            lastNewInternalNode = newInternalNode;
-                            newInternalNode->suffixLink = &root;
-                            if (activeNode != &root) {
-                                activeNode = activeNode->suffixLink;
-                            } else {
-                                activeEdgeIndex++;
-                                activeLength--;
-                            }
-                            remaining--;// suffix was inserted
-                            std::cout << "    WWWWWWWWWWWWWWWWWW after:" << std::endl;
-                            print();
-                        }
+                    //there is a correct outgoing edge from activeNode
+                    if (walkDown(activeTarget)) {
+                        continue;
                     }
+
+                    if (text[activeTarget->startIndex + activeLength] == text[i]) {
+                        //character is already there
+                        if (lastNewInternalNode != NULL && activeNode != &root) {
+                            lastNewInternalNode->suffixLink = activeNode;
+                            lastNewInternalNode = NULL;
+                        }
+                        activeLength++;
+                        break;
+                    }
+
+                    splitIndex = new int();
+                    *splitIndex = activeTarget->startIndex + activeLength;
+                    Node<CharType> *newInternalNode = new Node<CharType>(activeNode, activeTarget->startIndex, splitIndex, &root);
+                    Node<CharType> *newLeaf = new Node<CharType>(newInternalNode, i, &currentEnd, &root);//leaf that ends as before
+                    activeNode->addChild(text[activeEdgeIndex], newInternalNode);
+                    newInternalNode->addChild(text[i], newLeaf); //the new leaf starts with the next character that could not be matched
+                    newInternalNode->addChild(text[activeTarget->startIndex + activeLength], activeTarget);// the edge into the old target of the activeEdge starts with the character that did not match the new character
+                    activeTarget->startIndex += activeLength;
+                    if (lastNewInternalNode != NULL) {
+                        lastNewInternalNode->suffixLink = newInternalNode;
+                    }
+                    lastNewInternalNode = newInternalNode;
                 }
-                std::cout << "-------- done with suffix" << std::endl;
+                remaining--;
+                if (activeNode == &root && activeLength > 0) {
+                    activeLength--;
+                    activeEdgeIndex = i - remaining + 1;
+                } else if (activeNode != &root) {
+                    activeNode = activeNode->suffixLink;
+                }
+
+
+                if constexpr (Debug)std::cout << "-------- done with suffix" << std::endl;
             }
-            std::cout << "******** Done with iteration " << i << std::endl;
+            if constexpr (Debug)std::cout << "******** Done with iteration " << i << std::endl;
         }
 
         /**
          * Walks down the current active point to make sure it is valid
          */
-        inline void walkDown(int i) {
-            Node<CharType>* activeTarget = getActiveTarget();
-            if (activeTarget == NULL) return;
-            const int activeEdgeSubstringLength = activeTarget->getSubstringLength(currentEnd);
-            if (activeEdgeSubstringLength < activeLength) {
+        inline bool walkDown(Node<CharType>* activeTarget) {
+            const int activeEdgeSubstringLength = activeTarget->getSubstringLength();
+            if (activeLength >= activeEdgeSubstringLength) {
                 activeNode = activeTarget;
                 activeLength -= activeEdgeSubstringLength;
-                activeEdgeIndex = i;
-                //walkDown(i);
+                activeEdgeIndex += activeEdgeSubstringLength;
+                return true;
             }
+            return false;
         }
 
         inline Node<CharType>* getActiveTarget() const noexcept {
             return activeNode->getChild(text[activeEdgeIndex]);
-        }
-
-        inline int getActivePointIndex(int i) noexcept {
-            //TODO make this non-recursive
-            Node<CharType>* activeTarget = getActiveTarget();
-            if (activeTarget == NULL) return -1;
-            const int activeEdgeStringLength = activeTarget->getSubstringLength(currentEnd);
-            if (activeLength < activeEdgeStringLength) {// edge is sufficiently long, return from here
-                std::cout << " edge sufficiently long, return from there" << std::endl;
-                return activeNode->getActivePointIndex(text[activeEdgeIndex], activeLength, currentEnd);
-            }
-            if (activeEdgeStringLength == activeLength) {// activeLength
-                std::cout << " edge length just correct" << std::endl;
-                if (activeTarget->getChild(text[i]) != NULL) {
-                    return i;
-                }
-                std::cout << " FAIL" << std::endl;
-                return -1;
-            } else {
-                AssertMsg(false, "This should never happen. ActiveLength too large");
-                /*
-                std::cout << " skip edge" << std::endl;
-                //active edge is not long enough, skip it
-                activeNode = activeTarget;
-                activeLength -= activeEdgeStringLength;
-                activeEdgeIndex = i;
-                return getActivePointIndex(i);
-                 */
-            }
         }
 
         inline void print() noexcept {
@@ -248,6 +151,11 @@ namespace UkkonenSuffixTree {
             std::cout << std::endl;
         }
 
+        inline void printSimple() noexcept {
+            root.printSimple(0);
+            std::cout << std::endl;
+        }
+
         inline void validate() noexcept {
             std::cout << "SA: ";
             saDfs(&root, 0);
@@ -255,30 +163,36 @@ namespace UkkonenSuffixTree {
         }
 
         inline void saDfs(Node<CharType>* node, int stringDepth) {
-            stringDepth += node->getSubstringLength(currentEnd);
+            stringDepth += node->getSubstringLength();
             if (node->hasChildren()) {
                 for (const auto &[key, child] : node->children) {
                     saDfs(child, stringDepth);
                 }
             } else {
                 //leaf
-                int suffixIndex = node->trueEndIndex(currentEnd) - stringDepth;
+                int suffixIndex = *(node->endIndex) - stringDepth;
                 std::cout << suffixIndex << " ";
             }
         }
 
         inline void printingDfs(Node<CharType>* node, int depth) {
             std::cout << std::string(depth, ' ');
-            for (int l = 0; l < node->getSubstringLength(currentEnd); l++) {
+            for (int l = 0; l < node->getSubstringLength(); l++) {
                 std::cout << text[node->startIndex + l];
             }
             std::cout << std::endl;
             for (const auto & [key, child] : node->children) {
-                dfs(child, depth + node->getSubstringLength(currentEnd));
+                dfs(child, depth + node->getSubstringLength());
             }
         }
 
-    private:
+        inline std::string substring(size_t startIndex, size_t length) const noexcept {
+            std::string result(text + startIndex);
+            result.resize(length);
+            return result;
+        }
+
+    public:
         const CharType* text;
         Node<CharType> root;
         int currentEnd;
@@ -288,5 +202,6 @@ namespace UkkonenSuffixTree {
         Node<CharType>* activeNode;
         Node<CharType>* lastNewInternalNode;
         int remaining;
+        int* splitIndex;
     };
 }
