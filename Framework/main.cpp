@@ -23,11 +23,14 @@ struct TopKQuery {
 static const bool Interactive = true;
 //Debug flag. Generates extensive debug info.
 static const bool Debug = Interactive && false;
+using CharType = char;
+static const CharType Sentinel = '\0';
 
 inline static void readRemainingFileContents(std::ifstream& inputFile, std::string& inputText) {
     std::stringstream inputBuffer;
     inputBuffer << inputFile.rdbuf();
     inputText = inputBuffer.str();
+    inputText.push_back(Sentinel);
 }
 
 inline static void handleTopKQuery(char *argv[]) {
@@ -57,14 +60,14 @@ inline static void handleTopKQuery(char *argv[]) {
     Helpers::Timer preprocessingTimer;
     //Generate the suffix tree for the input.
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
-    SuffixTree::SuffixTree<char, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
+    SuffixTree::SuffixTree<CharType, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
     if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
-    Query::TopKQuery<char, Query::TopKProfiler, Debug> query(&stree);
+    Query::TopKQuery<CharType, Sentinel, Query::TopKProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
     stree.printSimple();
@@ -114,14 +117,18 @@ inline static void handleRepeatQuery(char *argv[]) {
     //Measure the preprocessing time.
     Helpers::Timer preprocessingTimer;
     //Generate the suffix tree.
-    SuffixTree::SuffixTree<char, Debug> stree(inputText.c_str(), inputText.length());
+
+    SuffixTree::SuffixTree<CharType, Debug> stree(inputText.c_str(), inputText.length());
+    if constexpr (Interactive) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
 
     //Again, query initialization time will be measured as preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
-    Query::RepeatQuery<char, Query::RepeatProfiler, Debug> query(&stree);
+    Query::RepeatQuery<CharType, Sentinel, Query::RepeatProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
+
+    stree.printSimple();
 
     size_t startPosition, length;
     Helpers::Timer queryTimer;
@@ -162,7 +169,7 @@ int main(int argc, char *argv[]) {
     }
     /*
     std::string inputText(argv[1]);
-    SuffixTree::SuffixTree<char, false> suffixTree(inputText.c_str(), inputText.length());
+    SuffixTree::SuffixTree<CharType, false> suffixTree(inputText.c_str(), inputText.length());
     suffixTree.validate();
     */
 

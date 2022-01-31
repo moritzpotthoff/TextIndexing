@@ -25,10 +25,11 @@ namespace Query {
      *  - Select all highest nodes with string depth >= l. These represent substrings of length >= l (if > l, then a prefix of length l occurs exactly as often).
      *  - Stable-sort those candidates by their #occurences to find the k-th entry. Return that.
      */
-    template<typename CHAR_TYPE, typename PROFILER, bool DEBUG = false>
+    template<typename CHAR_TYPE, CHAR_TYPE SENTINEL, typename PROFILER, bool DEBUG = false>
     class TopKQuery {
         using CharType = CHAR_TYPE;
         using Profiler = PROFILER;//For evaluation, use with TopKProfiler; for production, use NoProfiler. All method calls made to profiler in this class are for time measurements.
+        static const CharType Sentinel = SENTINEL;
         static const bool Debug = DEBUG;
 
     public:
@@ -114,8 +115,8 @@ namespace Query {
             while (!queue.empty()) {
                 const SuffixTree::Node<CharType>* node = queue.front();
                 queue.pop();
-                if (node->stringDepth >= length) {
-                    //If this node has at least level l add the relevant candidate.
+                if (node->stringDepth >= length && node->representedSuffix + length < tree->n) {
+                    //If this node has at least level l and the suffix is valid, add the relevant candidate.
                     //Store #occurences to find the correct entry later on and the representedSuffix to reconstruct the solution.
                     candidates.emplace_back(node->numberOfLeaves, node->representedSuffix);
                 } else {
@@ -154,8 +155,8 @@ namespace Query {
             //endIndex - stringDepth is the start position of one of the suffixes represented by leaves below this node.
             node->representedSuffix = *node->endIndex - node->stringDepth;
             if (node->hasChildren()) {
-                //remove all $ leaves, but count them as children because they represent suffixes, too.
-                node->numberOfLeaves = node->children.erase('$');
+                //remove all sentinel leaves, but count them as children because they represent suffixes, too.
+                node->numberOfLeaves = node->children.erase(Sentinel);
                 //Recursive dfs calls for all children. Simultaneously, calculate the number of leaves below this node.
                 for (const auto & [key, child] : node->children) {
                     node->numberOfLeaves += countingDfs(child, node->stringDepth);

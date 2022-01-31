@@ -34,10 +34,11 @@ namespace Query {
      *  - Because we consider inner nodes by descending string depth, the first witness is the result.
      *  - Return the suffix start position.
      */
-    template<typename CHAR_TYPE, typename PROFILER, bool DEBUG = false>
+    template<typename CHAR_TYPE, CHAR_TYPE SENTINEL, typename PROFILER, bool DEBUG = false>
     class RepeatQuery {
         using CharType = CHAR_TYPE;
         using Profiler = PROFILER;
+        static const CharType Sentinel = SENTINEL;
         static const bool Debug = DEBUG;
 
     public:
@@ -60,6 +61,10 @@ namespace Query {
                 std::cout << std::endl << std::endl << std::endl << "Done with query preprocessing. Tree is:" << std::endl;
                 tree->root.print(4);
             }
+            for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
+                std::cout << "d=" << innerNode->stringDepth << ",c=" << tree->text[innerNode->startIndex] << std::endl;
+            }
+            std::cout << std::endl;
         }
 
         /**
@@ -73,11 +78,11 @@ namespace Query {
             //iterate over all inner nodes, they are already in sorted order.
             for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
                 profiler.startInnerNodePhase();
-                if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
+                if constexpr (Debug || true) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 //get all the suffixes below the inner node using the DP-merging approach described above
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
-                if constexpr (Debug) {
+                if constexpr (Debug || true) {
                     std::cout << "   Leaves below it are: " << innerNode->stringDepth << std::endl << "      ";
                     for (size_t i = 0; i < leaves.size(); i++) {
                         std::cout << leaves[i] << ", ";
@@ -92,13 +97,13 @@ namespace Query {
                 std::tie(foundSolution, startIndex) = findPair(leaves, innerNode->stringDepth);
                 profiler.endPairPhase();
                 if (foundSolution) {
-                    if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
+                    if constexpr (Debug || true) std::cout << "   Found solution at position " << startIndex << std::endl;
                     profiler.endInnerNodePhase();
                     profiler.endActualQuery();
                     //return solution
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
-                if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
+                if constexpr (Debug || true) std::cout << "   Found no solution." << std::endl;
                 profiler.endInnerNodePhase();
             }
             profiler.endActualQuery();
@@ -196,6 +201,7 @@ namespace Query {
         inline void stringDepthDfs(SuffixTree::Node<CharType>* node, size_t depth) noexcept {
             //TODO avoid recursion?
             node->stringDepth = depth + *node->endIndex - node->startIndex;
+            node->representedSuffix = *node->endIndex - node->stringDepth;
             for (const auto & [key, child] : node->children) {
                 stringDepthDfs(child, node->stringDepth);
             }
