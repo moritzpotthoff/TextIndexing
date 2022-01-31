@@ -109,6 +109,9 @@ namespace Query {
          *    that are scanned.
          *  - If (and only if, see above) a node is scanned that does not have sufficient string depth yet, all its children need to be explored as well.
          *
+         * Actually, the candidates could also be precomputed once for all queries (along with their suffixDepths) and then be filtered
+         * for each query. However, that is significantly slower than this approach for small values for l since here, we can often end the search
+         * early and do not need to consider as many candidates in the first place.
          */
         inline void collectingBfs(std::vector<Candidate>& candidates, const int length) const noexcept {
             //Use a queue to preserve the suffix ordering from the suffix tree. This is necessary to get lexicographic ordering.
@@ -171,6 +174,7 @@ namespace Query {
         }
 
     public:
+        //The suffix tree.
         SuffixTree::SuffixTree<CharType, Debug>* tree;
 
         //Used solely for optimization.

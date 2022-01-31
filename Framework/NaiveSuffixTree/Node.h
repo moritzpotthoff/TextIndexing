@@ -2,7 +2,7 @@
 
 #include <map>
 
-namespace NaiveSuffixTree {
+namespace SuffixTree {
     /**
      * Represents a node in the suffix tree.
      *

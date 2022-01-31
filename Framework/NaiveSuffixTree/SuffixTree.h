@@ -5,7 +5,7 @@
 
 #include "Node.h"
 
-namespace NaiveSuffixTree {
+namespace SuffixTree {
 
     template<typename CHAR_TYPE, bool DEBUG = false>
     class SuffixTree {
@@ -13,6 +13,9 @@ namespace NaiveSuffixTree {
         static const bool Debug = DEBUG;
 
     public:
+        /**
+         * This is a naive O(n^2) variant of suffix tree construction that I used earlier.
+         */
         SuffixTree(const CharType* input, size_t n) :
             text(input),
             root(NULL, 0, 0),
