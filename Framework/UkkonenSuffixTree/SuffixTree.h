@@ -17,6 +17,8 @@ namespace SuffixTree {
      *      - https://www.youtube.com/watch?v=aPRqocoBsFQ
      *      - https://brenden.github.io/ukkonen-animation/
      *
+     * The memory consumption is pretty bad, but I do not have more time to address that :|
+     *
      */
     template<typename CHAR_TYPE, bool DEBUG = false>
     class SuffixTree {

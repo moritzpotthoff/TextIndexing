@@ -20,7 +20,7 @@ struct TopKQuery {
 };
 
 //Interactive flag. If true, generates a little more output than just the result line.
-static const bool Interactive = true;
+static const bool Interactive = false;
 //Debug flag. Generates extensive debug info.
 static const bool Debug = Interactive && false;
 using CharType = char;
@@ -30,7 +30,7 @@ inline static void readRemainingFileContents(std::ifstream& inputFile, std::stri
     std::stringstream inputBuffer;
     inputBuffer << inputFile.rdbuf();
     inputText = inputBuffer.str();
-    inputText.push_back(Sentinel);
+    inputText.push_back(Sentinel);//add sentinel for preprocessing
 }
 
 inline static void handleTopKQuery(char *argv[]) {
@@ -62,12 +62,12 @@ inline static void handleTopKQuery(char *argv[]) {
     //Use +/-2 in start and length to cut off the line break between the last query part and the actual text.
     SuffixTree::SuffixTree<CharType, Debug> stree(inputText.c_str() + 2, inputText.length() - 2);
     size_t preprocessingTime = preprocessingTimer.getMilliseconds();
-    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'" << std::endl;
+    if constexpr (Debug) std::cout << "Generated suffix tree for input: '" << stree.text << "'." << std::endl;
 
     //The time needed (once) for additional query preprocessing will be added to the suffix tree generation time for the total preprocessing time.
     Helpers::Timer queryInitTimer;
     //Generate the query instance.
-    Query::TopKQuery<CharType, Sentinel, Query::TopKProfiler, Debug> query(&stree);
+    Query::TopKQuery<CharType, Sentinel, Query::TopKNoProfiler, Debug> query(&stree);
     size_t queryInitTime = queryInitTimer.getMilliseconds();
 
     if constexpr (Debug) stree.printSimple();
@@ -97,7 +97,7 @@ inline static void handleTopKQuery(char *argv[]) {
     }
 
     std::cout   << "RESULT algo=topk name=moritz-potthoff"
-                << " construction time=" << (preprocessingTime + queryInitTime)
+                << " construction time=" << (preprocessingTime + queryInitTime)//count the initialization of the query (that is independent of actual queries) as preprocessing time
                 << " query time=" << totalQueryTime
                 << " solutions=" << queryResults.str()
                 << " file=" << inputFileName << std::endl;
@@ -147,9 +147,9 @@ inline static void handleRepeatQuery(char *argv[]) {
         std::cout << std::endl;
     }
     std::cout << "RESULT algo=repeat name=moritz-potthoff"
-              << " construction time=" << (preprocessingTime + queryInitTime)
+              << " construction time=" << (preprocessingTime + queryInitTime)//count query initialization as preprocessing: It could be done during the suffix tree generation, if that was only used for repeat queries.
               << " query time=" << queryTime
-              << " solutions=" << stree.substring(startPosition, length)
+              << " solution=" << stree.substring(startPosition, length)
               << " file=" << inputFileName << std::endl;
 }
 

@@ -3,6 +3,9 @@
 
 namespace Helpers {
 
+    /**
+     * Simple Timer used for the evaluation.
+     */
     class Timer {
     public:
         Timer() : start(std::chrono::high_resolution_clock::now()) {}
