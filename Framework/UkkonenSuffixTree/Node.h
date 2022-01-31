@@ -9,8 +9,7 @@ namespace SuffixTree {
         using CharType = CHAR_TYPE;
 
     public:
-        Node(Node<CharType>* parent, int startIndex, int* endIndex, Node<CharType>* suffixLink = NULL) :
-                parent(parent),
+        Node(int startIndex, int* endIndex, Node<CharType>* suffixLink = NULL) :
                 startIndex(startIndex),
                 endIndex(endIndex),
                 suffixLink(suffixLink),
@@ -30,7 +29,6 @@ namespace SuffixTree {
         }
 
         inline void addChild(CharType key, Node* value) noexcept {
-            value->parent = this;
             children[key] = value;
         }
 
@@ -50,7 +48,7 @@ namespace SuffixTree {
         }
 
         inline void print(int depth) const noexcept {
-            std::cout << std::string(depth, ' ') << "Node " << this << " [" << startIndex << ", " << *endIndex << "), suffixLink " << suffixLink << " and parent " << parent << std::endl;
+            std::cout << std::string(depth, ' ') << "Node " << this << " [" << startIndex << ", " << *endIndex << "), suffixLink " << suffixLink << std::endl;
             for (std::pair<CharType, Node<CharType>*> element : children) {
                 std::cout << std::string(depth + 2, ' ') << "Key " << element.first << " is child " << element.second << std::endl;
                 element.second->print(depth + 4);
@@ -68,7 +66,6 @@ namespace SuffixTree {
 
 
     public:
-        Node<CharType>* parent;
         int startIndex;//inclusive
         int* endIndex;//exclusive
         Node<CharType>* suffixLink;

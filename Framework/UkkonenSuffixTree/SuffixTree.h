@@ -18,7 +18,7 @@ namespace SuffixTree {
     public:
         SuffixTree(const CharType* input, int n) :
                 text(input),
-                root(NULL, 0, NULL, NULL),
+                root(0, NULL, NULL),
                 currentEnd(0),
                 n(n),
                 activeEdgeIndex(0),
@@ -28,7 +28,6 @@ namespace SuffixTree {
                 remaining(0) {
             if constexpr (Debug) std::cout << "Created new suffix tree with length " << n << std::endl;
             root.endIndex = new int(0);
-            root.parent = &root;
             activeNode = &root;
 
             createSuffixTree();
@@ -71,7 +70,7 @@ namespace SuffixTree {
                 Node<CharType>* activeTarget = getActiveTarget();
                 if (activeTarget == NULL) {
                     //there is no correct outgoing edge from activeNode, create new leaf
-                    Node<CharType>* newLeaf = new Node<CharType>(activeNode, i, &currentEnd, &root);
+                    Node<CharType>* newLeaf = new Node<CharType>(i, &currentEnd, &root);
                     activeNode->addChild(text[activeEdgeIndex], newLeaf);
 
                     if (lastNewInternalNode != NULL) {
@@ -96,8 +95,8 @@ namespace SuffixTree {
 
                     splitIndex = new int();
                     *splitIndex = activeTarget->startIndex + activeLength;
-                    Node<CharType> *newInternalNode = new Node<CharType>(activeNode, activeTarget->startIndex, splitIndex, &root);
-                    Node<CharType> *newLeaf = new Node<CharType>(newInternalNode, i, &currentEnd, &root);//leaf that ends as before
+                    Node<CharType> *newInternalNode = new Node<CharType>(activeTarget->startIndex, splitIndex, &root);
+                    Node<CharType> *newLeaf = new Node<CharType>(i, &currentEnd, &root);//leaf that ends as before
                     activeNode->addChild(text[activeEdgeIndex], newInternalNode);
                     newInternalNode->addChild(text[i], newLeaf); //the new leaf starts with the next character that could not be matched
                     newInternalNode->addChild(text[activeTarget->startIndex + activeLength], activeTarget);// the edge into the old target of the activeEdge starts with the character that did not match the new character
