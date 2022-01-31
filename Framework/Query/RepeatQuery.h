@@ -12,8 +12,8 @@ namespace Query {
     /**
      * Brief summary of the thoughts that led to my query approach:
      *  - If there is a substring aa, then the text must have the form uaav.
-     *  - This means that there are two suffixes, aav and av starting with the same prefix a of length l.
-     *    The suffixes have indices i and i+l for some i.
+     *  - This means that there are two suffixes, aav and av, starting with the same prefix a of length l.
+     *    These suffixes have indices i and i+l for some i.
      *  - Consequently, for any substring of the form aa with length 2*l, there exists an inner node in the suffix tree
      *    with suffix depth l (the path to it represents the common prefix, a), that has two leaves below it which
      *    represent exactly the suffixes i and i+l and vice-versa.
@@ -41,6 +41,12 @@ namespace Query {
         static const bool Debug = DEBUG;
 
     public:
+        /**
+         * Create a new query from the given suffix tree tree.
+         * Does some necessary preprocessing steps that would typically be made in the suffix tree
+         * generation if my suffix tree would be used only for this query type.
+         * Therefore, they are here and counted as preprocessing time.
+         */
         RepeatQuery(NaiveSuffixTree::SuffixTree<CharType, Debug>* tree) :
             tree(tree) {
             //precompute number of leaves under each node.
@@ -56,11 +62,19 @@ namespace Query {
             }
         }
 
+        /**
+         * Actually runs the repeat query on the input tree using the precomputed values and the
+         * algorithm described above.
+         *
+         * Returns the start index and the length of the repetition (length of aa).
+         */
         inline std::pair<size_t, size_t> runQuery() noexcept {
             profiler.startActualQuery();
+            //iterate over all inner nodes, they are already in sorted order.
             for (NaiveSuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
                 profiler.startInnerNodePhase();
                 if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
+                //get all the suffixes below the inner node using the DP-merging approach described above
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
                 if constexpr (Debug) {
@@ -74,12 +88,14 @@ namespace Query {
                 bool foundSolution;
                 size_t startIndex;
                 profiler.startPairPhase();
+                //find a pair of suffix indices below innerNode whose difference is the innerNode's string depth
                 std::tie(foundSolution, startIndex) = findPair(leaves, innerNode->stringDepth);
                 profiler.endPairPhase();
                 if (foundSolution) {
                     if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
                     profiler.endInnerNodePhase();
                     profiler.endActualQuery();
+                    //return solution
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
                 if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
@@ -89,8 +105,14 @@ namespace Query {
             return std::make_pair(0, 0);
         }
 
+        /**
+         * In the sorted list of suffix indices leaves, finds a pair of values with the given difference, if it exists.
+         *
+         * Returns if a result was found and the lexicographically smaller suffix index
+         */
         inline std::pair<bool, size_t> findPair(std::vector<size_t> &leaves, size_t difference) const noexcept {
             // https://www.geeksforgeeks.org/find-a-pair-with-the-given-difference/
+            //TODO explain algorithm better
             size_t i = 0;
             size_t j = 1;
 
@@ -107,14 +129,28 @@ namespace Query {
             return std::make_pair(false, 0);
         }
 
+        /**
+         * Over the course of the query, this is a dynamic program that computes all necessary sorted list of
+         * suffix indices below inner nodes.
+         *
+         * For a call for innerNode, it uses the lists for all children of innerNode.
+         * Again, these were already computed and stored since inner nodes with greater string depth were considered before.
+         *
+         * Therefore, it is sufficient to iteratively merge all those lists.
+         * This could probably be made more efficient using k-way merging, but I don't have that much time for now.
+         *
+         * The resulting list will be stored into suffixesb
+         */
         inline void collectSuffixesBelow(NaiveSuffixTree::Node<CharType>* innerNode) noexcept {
             std::vector<size_t> suffixes;
+            //index of the list in suffixesBelowInnerNode that the list must be stored in
             const size_t currentIndex = innerNode->representedSuffix;
             for (const auto & [key, child] : innerNode->children) {
                 if (child->hasChildren()) {
-                    //child is inner node, reuse previously generated list
+                    //child is inner node, reuse previously generated list and merge with current list
                     const size_t childIndex = child->representedSuffix;
                     suffixes.clear();
+                    //merge the two lists into suffixes
                     std::merge(suffixesBelowInnerNode[currentIndex].begin(), suffixesBelowInnerNode[currentIndex].end(), suffixesBelowInnerNode[childIndex].begin(), suffixesBelowInnerNode[childIndex].end(), std::back_inserter(suffixes));
                     //copy new list back
                     suffixesBelowInnerNode[currentIndex].clear();
