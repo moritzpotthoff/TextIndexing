@@ -95,14 +95,15 @@ namespace UkkonenSuffixTree {
 
                     if (!sufficientPath) {
                         //active point is beyond the end of the path, need to add a new leaf to the path
-                        Node<CharType>* activeTarget = getActiveTarget();
-                        Node<CharType>* newLeaf = new Node<CharType>(activeTarget, i, CurrentEndFlag);
-                        activeTarget->addChild(text[i], newLeaf);
+                        Node<CharType>* parent = getActiveTarget();
+                        if (parent == NULL) parent = activeNode;
+                        Node<CharType>* newLeaf = new Node<CharType>(parent, i, CurrentEndFlag);
+                        parent->addChild(text[i], newLeaf);
 
                         if (lastNewInternalNode != NULL) {
-                            lastNewInternalNode->suffixLink = getActiveTarget();
+                            lastNewInternalNode->suffixLink = parent;
                         }
-                        lastNewInternalNode = activeTarget;
+                        lastNewInternalNode = parent;
 
                         if (activeNode != &root) {
                             activeNode = activeNode->suffixLink;
