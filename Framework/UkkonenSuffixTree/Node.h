@@ -33,16 +33,6 @@ namespace SuffixTree {
                 stringDepth(0),
                 representedSuffix(0) {
         }
-        /*
-        inline int getActivePointIndex(CharType activeEdge, int activeLength) noexcept {
-            return children[activeEdge]->getTextIndex(activeLength);
-        }
-
-        inline int getTextIndex(int offset) const noexcept {
-            AssertMsg((offset >= 0 && startIndex + offset < *endIndex), "Offset is invalid.");
-            return startIndex + offset;
-        }
-         */
 
         /**
          * Adds value as a new child for initial character key and ensures that the child's parent pointer is correct.

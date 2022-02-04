@@ -79,32 +79,22 @@ namespace Query {
             //iterate over all inner nodes, they are already in sorted order.
             for (SuffixTree::Node<CharType>* innerNode : sortedInnerNodes) {
                 profiler.startInnerNodePhase();
-                if constexpr (Debug) std::cout << "Looking at inner node with depth " << innerNode->stringDepth << std::endl;
                 //get all the suffixes below the inner node using the DP-merging approach described above
                 profiler.startMergePhase();
                 collectSuffixesBelow(innerNode);
                 std::vector<size_t> leaves = suffixesBelowInnerNode[innerNode->representedSuffix];
                 profiler.endMergePhase();
-                if constexpr (Debug) {
-                    std::cout << "   Leaves below it are: " << innerNode->stringDepth << std::endl << "      ";
-                    for (size_t i = 0; i < leaves.size(); i++) {
-                        std::cout << leaves[i] << ", ";
-                    }
-                    std::cout << std::endl;
-                }
                 profiler.startPairPhase();
                 //find a pair of suffix indices below innerNode whose difference is the innerNode's string depth.
                 int startIndex = findPair(leaves, innerNode->stringDepth);
                 profiler.endPairPhase();
                 if (startIndex != -1) {
-                    if constexpr (Debug) std::cout << "   Found solution at position " << startIndex << std::endl;
                     profiler.endInnerNodePhase();
                     profiler.endActualQuery();
                     //return solution; since we consider inner nodes by descending string depth, the first inner node with an
                     //appropriate pair of suffixes below it is the solution; return the start index and the length.
                     return std::make_pair(startIndex, 2 * innerNode->stringDepth);
                 }
-                if constexpr (Debug) std::cout << "   Found no solution." << std::endl;
                 profiler.endInnerNodePhase();
             }
             profiler.endActualQuery();
@@ -133,7 +123,7 @@ namespace Query {
                 if (i != j && (leaves[i] - leaves[j] == difference || leaves[j] - leaves[i] == difference)) {
                     //found a pair, return first index
                     return leaves[std::min(i, j)];
-                } else if (leaves[j] - leaves[i] < difference) { //the difference of the two values is smaller than the desired value, we need to increase the left value, therefore increase j
+                } else if (leaves[j] - leaves[i] < difference) { //the difference of the two values is smaller than the desired value, we need to increase the right value, therefore increase j
                     j++;
                 } else { //increase i
                     i++;
@@ -153,7 +143,7 @@ namespace Query {
          * Therefore, it is sufficient to iteratively merge all those lists.
          * This could probably be made more efficient using k-way merging, but I don't have that much time for now.
          *
-         * The resulting list will be stored into suffixesb
+         * The resulting list will be stored into suffixesBelowInnerNode[innerNode->representedSuffix]
          */
         inline void collectSuffixesBelow(SuffixTree::Node<CharType>* innerNode) noexcept {
             std::vector<size_t> suffixes;

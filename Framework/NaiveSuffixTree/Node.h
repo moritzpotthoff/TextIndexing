@@ -4,6 +4,9 @@
 
 namespace SuffixTree {
     /**
+     * THIS CAN BE IGNORED.
+     *
+     *
      * Represents a node in the suffix tree.
      *
      * The structure is as follows:

@@ -20,6 +20,9 @@ namespace Query {
         inline void endMergePhase() const noexcept {}
     };
 
+    /**
+     * Be careful, this has very significant overheads.
+     */
     class RepeatProfiler {
     public:
         RepeatProfiler() :
