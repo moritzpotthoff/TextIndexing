@@ -1,0 +1,23 @@
+Requested repeatQuery experiment.
+Original input has length 52428801
+RESULT algo=repeatQueryExperiment queryTime=2 inputType=pcSources inputLength=1000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=6422 inputType=pcSources inputLength=1000000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=15568 inputType=pcSources inputLength=2500000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=33968 inputType=pcSources inputLength=5000000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=52438 inputType=pcSources inputLength=7500000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=76640 inputType=pcSources inputLength=10000000 file=../EvaluationFiles/sources-50MB.txtRequested repeatQuery experiment.
+Original input has length 52428801
+RESULT algo=repeatQueryExperiment queryTime=2 inputType=pcDNA inputLength=1000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=4427 inputType=pcDNA inputLength=1000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=12950 inputType=pcDNA inputLength=2500000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=28482 inputType=pcDNA inputLength=5000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=44492 inputType=pcDNA inputLength=7500000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=61992 inputType=pcDNA inputLength=10000000 file=../EvaluationFiles/dna-50MB.txt
+Requested repeatQuery experiment.
+Original input has length 52428801
+RESULT algo=repeatQueryExperiment queryTime=3 inputType=pcEnglish inputLength=1000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=4455 inputType=pcEnglish inputLength=1000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=11944 inputType=pcEnglish inputLength=2500000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=34386 inputType=pcEnglish inputLength=5000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=68130 inputType=pcEnglish inputLength=7500000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=repeatQueryExperiment queryTime=96558 inputType=pcEnglish inputLength=10000000 file=../EvaluationFiles/english-50MB.txt

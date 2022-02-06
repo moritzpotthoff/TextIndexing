@@ -1,0 +1,7 @@
+Requested repeatQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=2 inputType=pcDNA inputLength=1000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=30 inputType=pcDNA inputLength=10000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=363 inputType=pcDNA inputLength=100000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=5122 inputType=pcDNA inputLength=1000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=60967 inputType=pcDNA inputLength=10000000 file=../EvaluationFiles/dna-50MB.txt

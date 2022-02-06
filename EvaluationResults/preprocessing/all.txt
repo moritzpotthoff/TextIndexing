@@ -1,0 +1,53 @@
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=204 inputType=pcEnglish inputLength=100000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=1048 inputType=pcEnglish inputLength=500000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=2171 inputType=pcEnglish inputLength=1000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=174 inputType=pcSources inputLength=100000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=876 inputType=pcSources inputLength=500000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=1856 inputType=pcSources inputLength=1000000 file=../EvaluationFiles/sources-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=192 inputType=pcDNA inputLength=100000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=1089 inputType=pcDNA inputLength=500000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=2203 inputType=pcDNA inputLength=1000000 file=../EvaluationFiles/dna-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=24160 inputType=pcEnglish inputLength=10000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=41994 inputType=pcEnglish inputLength=15000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=25908 inputType=pcEnglish inputLength=10000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=38781 inputType=pcEnglish inputLength=15000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=24523 inputType=pcEnglish inputLength=10000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=40014 inputType=pcEnglish inputLength=15000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=26110 inputType=pcDNA inputLength=10000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=42842 inputType=pcDNA inputLength=15000000 file=../EvaluationFiles/dna-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=23181 inputType=pcSources inputLength=10000000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=35551 inputType=pcSources inputLength=15000000 file=../EvaluationFiles/sources-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=46269 inputType=pcSources inputLength=20000000 file=../EvaluationFiles/sources-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=57422 inputType=pcDNA inputLength=20000000 file=../EvaluationFiles/dna-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=52530 inputType=pcEnglish inputLength=20000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=10996 inputType=pcEnglish inputLength=5000000 file=../EvaluationFiles/english-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=12346 inputType=pcDNA inputLength=5000000 file=../EvaluationFiles/dna-50MB.txt
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=10033 inputType=pcSources inputLength=5000000 file=../EvaluationFiles/sources-50MB.txt

@@ -1,0 +1,8 @@
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=0 inputType=pcDNA inputLength=1000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=4 inputType=pcDNA inputLength=10000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=54 inputType=pcDNA inputLength=100000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=805 inputType=pcDNA inputLength=1000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=9938 inputType=pcDNA inputLength=10000000 file=../EvaluationFiles/dna-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=21736 inputType=pcDNA inputLength=20000000 file=../EvaluationFiles/dna-50MB.txt

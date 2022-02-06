@@ -196,6 +196,9 @@ namespace Query {
             });
             //prepare DP-memory container size
             suffixesBelowInnerNode.resize(sortedInnerNodes.size());
+                for (size_t i = 0; i < sortedInnerNodes.size(); i++) {
+                    sortedInnerNodes[i]->representedSuffix = i;
+                }
         }
 
         /**

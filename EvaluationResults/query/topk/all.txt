@@ -1,0 +1,42 @@
+Requested topKQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=2 inputType=pcEnglish inputLength=1000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=2702 inputType=pcEnglish inputLength=1000000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=8911 inputType=pcEnglish inputLength=2500000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=12992 inputType=pcEnglish inputLength=5000000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=18235 inputType=pcEnglish inputLength=7500000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=24295 inputType=pcEnglish inputLength=10000000 queryLength=10 file=../EvaluationFiles/english-50MB.txt
+
+Requested topKQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=2 inputType=pcSources inputLength=1000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=1617 inputType=pcSources inputLength=1000000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=4529 inputType=pcSources inputLength=2500000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=9106 inputType=pcSources inputLength=5000000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=13868 inputType=pcSources inputLength=7500000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=17064 inputType=pcSources inputLength=10000000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+
+Requested topKQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=3 inputType=pcDNA inputLength=1000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=1970 inputType=pcDNA inputLength=1000000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=3179 inputType=pcDNA inputLength=2500000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=4518 inputType=pcDNA inputLength=5000000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=5894 inputType=pcDNA inputLength=7500000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+
+RESULT algo=topKQueryExperiment queryTime=5111 inputType=pcDNA inputLength=10000000 queryLength=10 file=../EvaluationFiles/dna-50MB.txt
+

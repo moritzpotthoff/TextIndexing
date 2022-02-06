@@ -160,7 +160,7 @@ namespace Query {
             node->representedSuffix = *node->endIndex - node->stringDepth;
             if (node->hasChildren()) {
                 //remove all sentinel leaves, but count them as children because they represent suffixes, too.
-                node->numberOfLeaves = node->children.erase(Sentinel);
+                node->numberOfLeaves = node->children.erase('\0');
                 //Recursive dfs calls for all children. Simultaneously, calculate the number of leaves below this node.
                 for (const auto & [key, child] : node->children) {
                     node->numberOfLeaves += countingDfs(child, node->stringDepth);

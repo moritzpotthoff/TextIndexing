@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.21">
-<info created="D:20090429144355" modified="D:20220204012542" title="Textindexierung Programmierprojekt" author="Moritz Potthoff"/>
+<info created="D:20090429144355" modified="D:20220206211057" title="Textindexierung Programmierprojekt" author="Moritz Potthoff"/>
 <preamble>\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -37,6 +37,39 @@
 \newcommand{\mx}{\raisebox{0.1ex}{+}}
 
 \usepackage{cite}
+
+\usepackage{tikz,pgfplots}
+\pgfplotsset{compat=1.17}
+\input{kitColors.tex}
+\usetikzlibrary{plotmarks}
+
+\pgfplotscreateplotcyclelist{kitcolors}{
+    KITgreen,every mark/.append style={fill=KITgreen!80!black},mark=*\\
+    KITblue,every mark/.append style={fill=KITblue!80!black},mark=square*\\
+    KITlilac,every mark/.append style={fill=KITlilac!80!black},mark=pentagon*\\
+    KITorange,every mark/.append style={fill=KITorange!80!black},mark=diamond*\\
+    KITbrown,every mark/.append style={fill=KITbrown!80!black},mark=triangle*\\
+}
+
+\pgfplotsset{
+    width=90mm, height=60mm,
+  major grid style={thin,dotted,color=black!50},
+  minor grid style={thin,dotted,color=black!50},
+  every axis/.append style={
+    line width=0.5pt,
+    tick style={
+      line cap=round,
+      thin,
+      major tick length=4pt,
+      minor tick length=2pt,
+    },
+  },
+  legend cell align=left,
+  legend pos=north west,
+  grid=major,
+  cycle list name=kitcolors,
+  every axis plot/.append style={ultra thick}
+}
 
 
 </preamble>
@@ -3741,19 +3774,195 @@ h
 <use matrix="1.15654 0 0 1.15654 5.49662 -112.018" name="mark/fdisk(sfx)" pos="240 320" size="12" stroke="KITseablue" fill="white"/>
 <use matrix="1.15654 0 0 1.15654 5.49662 -112.018" name="mark/fdisk(sfx)" pos="336 368" size="12" stroke="KITseablue" fill="white"/>
 <use matrix="1.15654 0 0 1.15654 5.49662 -112.018" name="mark/fdisk(sfx)" pos="400 352" size="12" stroke="KITseablue" fill="white"/>
+<path layer="multimodal_ultra" matrix="1 0 0 1 -256 -96" stroke="KITpalegreen" dash="dashed (2 pt)" pen="8">
+580 196 m
+600 188
+616 184
+676 204
+692 212
+764 240
+784 244
+856 168
+872 176
+892 192 c
+</path>
+<path matrix="1 0 0 1 -256 -96" stroke="KITblack70" pen="3">
+772 240 m
+800 304 l
+864 176 l
+888 96 l
+</path>
+<path matrix="1 0 0 1 -256 -96" stroke="KITblack70" pen="3">
+608 188 m
+640 304 l
+684 208 l
+</path>
+<path matrix="1 0 0 1 -256 -96" stroke="KITblack70" pen="3">
+720 384 m
+640 304 l
+</path>
+<path matrix="1 0 0 1 -256 -80" stroke="KITblack70" pen="3">
+712 72 m
+684 192 l
+</path>
+<path matrix="1 0 0 1 -256 -80" stroke="KITblack70" pen="3">
+800 136 m
+772 224 l
+</path>
+<path matrix="1 0 0 1 -256 -80" stroke="KITblack70" pen="3">
+800 288 m
+720 368 l
+</path>
+<use matrix="1 0 0 1 -256 -80" name="mark/fdisk(sfx)" pos="720 368" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 -256 -80" name="mark/fdisk(sfx)" pos="640 288" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -256 -80" name="mark/fdisk(sfx)" pos="800 288" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -220 -80" name="mark/fdisk(sfx)" pos="736 224" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -208 -40" name="mark/fdisk(sfx)" pos="752 96" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -256 -80" name="mark/fdisk(sfx)" pos="864 160" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -256 -80" name="mark/fdisk(sfx)" pos="888 80" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -216 -80" name="mark/fdisk(sfx)" pos="644 192" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -232 -100" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 -204 -88" name="mark/fdisk(sfx)" pos="660 80" size="normal" stroke="black" fill="white"/>
+<text matrix="1 0 0 1 -220 -132" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="6.9636" depth="0.196" valign="baseline" size="tiny">a</text>
+<text matrix="1 0 0 1 -312 -248" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 -224 -220" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="21.2744" height="9.2876" depth="0.196" valign="baseline" size="tiny">bba</text>
+<text matrix="1 0 0 1 -228 -352" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 -124 -132" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.2876" depth="0.196" valign="baseline" size="tiny">b</text>
+<text matrix="1 0 0 1 -116 -208" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="6.9636" depth="0.196" valign="baseline" size="tiny">a</text>
+<text matrix="1 0 0 1 -52 -240" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="14.2688" height="9.2876" depth="0.196" valign="baseline" size="tiny">ba</text>
+<text matrix="1 0 0 1 -96 -280" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 -4 -348" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 -256 -100" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -256 -116" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 -328 -4" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -328 -20" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -220 88" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<text matrix="1 0 0 1 -220 72" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">9</text>
+<text matrix="1 0 0 1 -140 0" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -140 -16" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -196 -68" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 -196 -84" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 -168 -156" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.4498" depth="0" valign="baseline" size="small">7</text>
+<text matrix="1 0 0 1 -168 -172" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -228 -220" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">9</text>
+<text matrix="1 0 0 1 -228 -236" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -328 -124" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">6</text>
+<text matrix="1 0 0 1 -328 -140" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -76 -132" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
+<text matrix="1 0 0 1 -76 -148" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 -80 -212" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">8</text>
+<text matrix="1 0 0 1 -80 -228" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<use matrix="1 0 0 1 -232 -100" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
+<use matrix="1 0 0 1 -156 -80" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
+<use matrix="1 0 0 1 -68 -48" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
+<use matrix="1 0 0 1 24 -112" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
+<path matrix="1 0 0 1 -384 -288" fill="KITred" opacity="50%" stroke-opacity="opaque">
+532 444
+536 444
+568 444
+572 444
+572 420
+568 420
+536 420
+532 420 u
+</path>
+<text matrix="1 0 0 1 -514 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
+<text matrix="1 0 0 1 -494 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
+<text matrix="1 0 0 1 -474 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
+<text matrix="1 0 0 1 -414 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
+<text matrix="1 0 0 1 -394 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
+<text matrix="1 0 0 1 -454 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
+<text matrix="1 0 0 1 -434 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
+<text matrix="1 0 0 1 -374 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
+<text matrix="1 0 0 1 -354 -248" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="14.0844" depth="2.068" halign="center" valign="baseline" size="small">\$</text>
+<text matrix="1 0 0 1 -514 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7974" depth="0.286" halign="center" valign="baseline" size="small">0</text>
+<text matrix="1 0 0 1 -494 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7842" depth="0" halign="center" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 -474 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7842" depth="0" halign="center" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 -454 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7974" depth="0.286" halign="center" valign="baseline" size="small">3</text>
+<text matrix="1 0 0 1 -434 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7842" depth="0" halign="center" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -414 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.463" depth="0.286" halign="center" valign="baseline" size="small">5</text>
+<text matrix="1 0 0 1 -394 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7974" depth="0.286" halign="center" valign="baseline" size="small">6</text>
+<text matrix="1 0 0 1 -374 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.4498" depth="0" halign="center" valign="baseline" size="small">7</text>
+<text matrix="1 0 0 1 -354 -272" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="12.7974" depth="0.286" halign="center" valign="baseline" size="small">8</text>
+<path matrix="1 0 0 1 -346 -220" stroke="KITblack" pen="1.5">
+452 376 m
+452 328 l
+636 328 l
+636 376 l
+h
+</path>
+<path matrix="1 0 0 1 -346 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -326 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -306 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -286 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -266 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -246 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -226 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -206 -220" stroke="KITblack" pen="1.5">
+474 376 m
+474 328 l
+</path>
+<path matrix="1 0 0 1 -346 -220" stroke="KITblack" pen="1.5">
+636 352 m
+452 352 l
+</path>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5578" depth="0.184" valign="top" size="veryTiny">{\bf 0}</text>
 </page>
 <page title="Vorberechnung: Suffix Tree">
 <layer name="alpha"/>
 <layer name="pagenumbers_page" edit="no"/>
+<layer name="beta"/>
 <view layers="alpha pagenumbers_page" active="alpha"/>
-<text layer="alpha" transformations="translations" pos="528 272" stroke="black" type="label" width="422.632" height="16.4028" depth="4.998" valign="baseline">Figure with running times for different texts</text>
-<text transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="69.7123" depth="57.624" valign="top">\textbf{Suffix Tree-Konstruktion:}
+<view layers="alpha pagenumbers_page beta" active="beta"/>
+<text layer="alpha" transformations="translations" pos="0 384" stroke="black" type="minipage" width="320" height="84.3266" depth="72.2995" valign="top">\textbf{Suffix Tree-Konstruktion:}
 \begin{itemize}
-\item In $\mathcal{O}(n)$ mittels \textbf{Ukkonens Algorithmus}
+\item In $\mathcal{O}(n)$ mittels \\ \textbf{Ukkonens Algorithmus}
 \item Hoher Platzbedarf
-\item Laufzeit...
+\item Lineare Laufzeit
 \end{itemize}</text>
+<text layer="beta" matrix="1 0 0 1 -128 16" transformations="translations" pos="480 384" stroke="black" type="minipage" width="560" height="210.781" depth="199.038" valign="top">\begin{tikzpicture}
+  \begin{axis}[
+  width=85mm,height=60mm,
+    xlabel={Input length (\#char)},
+    ylabel={Preprocessing time (ms)},
+    ymin=0,ymax=60000,
+    xmin=0,xmax=20000000,
+    %log ticks with fixed point,
+    xtick={100000, 5000000, 10000000, 15000000, 20000000},
+    ]
+
+    %% MULTIPLOT(inputType) SELECT inputLength AS x, (constructionTime) AS y, MULTIPLOT
+    %% FROM preprocessing WHERE inputLength &gt; 1000 GROUP BY MULTIPLOT,x ORDER BY MULTIPLOT,x
+    \addplot coordinates { (100000,192) (500000,1089) (1000000,2203) (5000000,12346) (10000000,26110) (15000000,42842) (20000000,57422) };
+    \addlegendentry{pcDNA};
+    \addplot coordinates { (100000,204) (500000,1048) (1000000,2171) (5000000,10996) (10000000,24160) (15000000,41994) (20000000,52530) };
+    \addlegendentry{pcEnglish};
+    \addplot coordinates { (100000,174) (500000,876) (1000000,1856) (5000000,10033) (10000000,23181) (15000000,35551) (20000000,46269) };
+    \addlegendentry{pcSources};
+    
+  \end{axis}
+\end{tikzpicture}</text>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5463" depth="0" valign="top" size="veryTiny">{\bf 1}</text>
 </page>
 <page title="TopK-Queries -- Algorithmus">
@@ -3890,7 +4099,7 @@ $\rightarrow$ \textbf{Kandidaten}, speichere Suffixposition und Anzahl Blätter<
 <use matrix="1 0 0 1 24 -4" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="black" fill="white"/>
 <use layer="sentinel-leaf-1" matrix="1 0 0 1 20 -4" name="mark/fdisk(sfx)" pos="588 88" size="normal" stroke="black" fill="white"/>
 <use layer="suffix-tree_base" matrix="1 0 0 1 52 8" name="mark/fdisk(sfx)" pos="660 80" size="normal" stroke="black" fill="white"/>
-<text layer="sentinel-labels" matrix="1 0 0 1 24 20" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
+<text layer="sentinel-labels" matrix="1 0 0 1 0 -4" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
 <text layer="labels-base" matrix="1 0 0 1 36 -36" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="6.9636" depth="0.196" valign="baseline" size="tiny">a</text>
 <text layer="sentinel-labels" matrix="1 0 0 1 -48 -96" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
 <text layer="labels-base" matrix="1 0 0 1 -56 -152" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
@@ -3927,8 +4136,8 @@ $\rightarrow$ \textbf{Kandidaten}, speichere Suffixposition und Anzahl Blätter<
 <text matrix="1 0 0 1 176 -116" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">8</text>
 <text matrix="1 0 0 1 176 -132" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
 <text layer="query" matrix="1 0 0 1 -56 36" transformations="translations" pos="540 36" stroke="KITblack" type="label" width="68.0635" height="16.5522" depth="4.802" valign="baseline">Query:</text>
-<text matrix="1 0 0 1 20 36" transformations="translations" pos="540 36" stroke="KITpalegreen" type="label" width="49.3283" height="16.9491" depth="0" valign="baseline">$\ell = 2$</text>
-<text matrix="1 0 0 1 76 36" transformations="translations" pos="540 36" stroke="KITred" type="label" width="52.6334" height="16.2239" depth="0" valign="baseline">$k = 2$</text>
+<text matrix="1 0 0 1 20 36" transformations="translations" pos="540 36" stroke="KITpalegreen" type="label" width="49.3283" height="16.9491" depth="0" valign="baseline" style="math">\ell = 2</text>
+<text matrix="1 0 0 1 76 36" transformations="translations" pos="540 36" stroke="KITred" type="label" width="52.6334" height="16.2239" depth="0" valign="baseline" style="math">k = 2</text>
 <use matrix="1 0 0 1 316 -216" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="black" fill="white"/>
 <use layer="query-marks" matrix="1 0 0 1 24 -4" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
 <use matrix="1 0 0 1 100 16" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="KITblack" fill="KITpalegreen"/>
@@ -3951,7 +4160,7 @@ $\rightarrow$ \textbf{Kandidaten}, speichere Suffixposition und Anzahl Blätter<
 <text matrix="1 0 0 1 68 -176" transformations="translations" pos="692 216" stroke="KITblack" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
 <text matrix="1 0 0 1 92 -176" transformations="translations" pos="692 216" stroke="KITblack" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
 <text matrix="1 0 0 1 116 -176" transformations="translations" pos="692 216" stroke="KITblack" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
-<text matrix="1 0 0 1 16 0" transformations="translations" pos="708 32" stroke="KITblack" type="label" width="24.4094" height="8.95475" depth="0" valign="baseline">$\rightarrow$</text>
+<text matrix="1 0 0 1 16 0" transformations="translations" pos="708 32" stroke="KITblack" type="label" width="24.4094" height="8.95475" depth="0" valign="baseline" style="math">\rightarrow</text>
 <path layer="beta" fill="white" opacity="70%" stroke-opacity="opaque">
 0 288 m
 0 240 l
@@ -4050,18 +4259,101 @@ h
 </path>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5463" depth="0" valign="top" size="veryTiny">{\bf 2}</text>
 </page>
-<page title="TopK Queries -- Evaluation">
+<page title="TopK Queries Performance">
 <layer name="alpha"/>
 <layer name="pagenumbers_page" edit="no"/>
 <view layers="alpha pagenumbers_page" active="alpha"/>
+<text layer="alpha" matrix="1 0 0 1 0 16" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="210.786" depth="199.038" valign="top">\begin{tikzpicture}
+  \begin{axis}[
+    xlabel={Input length (\#char)},
+    ylabel={Query time ($\ell = 10$, ms)},
+    ymin=0,ymax=25000,
+    xmin=0,xmax=10000000,
+    %log ticks with fixed point,
+    xtick={1000, 1000000, 2500000, 5000000, 7500000, 10000000},
+    ]
+
+    %% MULTIPLOT(inputType) SELECT inputLength AS x, queryTime AS y, MULTIPLOT
+    %% FROM query GROUP BY MULTIPLOT,x ORDER BY MULTIPLOT,x
+    \addplot coordinates { (1000,3) (1000000,1970) (2500000,3179) (5000000,4518) (7500000,5894) (10000000,5111) };
+    \addlegendentry{pcDNA};
+    \addplot coordinates { (1000,2) (1000000,2702) (2500000,8911) (5000000,12992) (7500000,18235) (10000000,24295) };
+    \addlegendentry{pcEnglish};
+    \addplot coordinates { (1000,2) (1000000,1617) (2500000,4529) (5000000,9106) (7500000,13868) (10000000,17064) };
+    \addlegendentry{pcSources};
+    
+  \end{axis}
+\end{tikzpicture}</text>
+<text transformations="translations" pos="640 384" stroke="black" type="minipage" width="256" height="111.149" depth="99.1515" valign="top" style="itemize">\item Anfragezeit linear in Inputlänge
+\item Je repetetiver der Text, desto schneller die Anfrage: Weniger innere Knoten werden exploriert</text>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5578" depth="0.184" valign="top" size="veryTiny">{\bf 3}</text>
+</page>
+<page title="TopK Query Performance nach Patternlänge">
+<layer name="alpha"/>
+<layer name="pagenumbers_page" edit="no"/>
+<layer name="beta"/>
+<layer name="gamma"/>
+<view layers="alpha pagenumbers_page gamma" active="gamma"/>
+<view layers="alpha pagenumbers_page beta" active="gamma"/>
+<text layer="beta" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="209.742" depth="197.985" valign="top">\begin{tikzpicture}
+  \begin{axis}[
+    xlabel={Query length $\log_{10}(\ell)$},
+    ylabel={Query time ($n = 10^7$, ms)},
+    ymin=0,ymax=55000,
+    xmin=0,xmax=6,
+    legend pos=south east,
+    %log ticks with fixed point,
+    xtick={1, 2, 3, 4, 5, 6},
+    ]
+
+    %% MULTIPLOT(inputType) SELECT LOG(10, queryLength) AS x, queryTime AS y, MULTIPLOT
+    %% FROM query GROUP BY MULTIPLOT,x ORDER BY MULTIPLOT,x
+    \addplot coordinates { (0.0,0) (0.69897,4) (1.0,6208) (1.69897,48508) (2.0,46656) (2.69897,47946) (3.0,46809) (3.69897,45551) (4.0,45744) (4.69897,46194) (5.0,51550) (5.69897,44314) (6.0,43034) };
+    \addlegendentry{pcDNA};
+    \addplot coordinates { (0.0,0) (0.69897,3101) (1.0,24020) (1.69897,41781) (2.0,46714) (2.69897,46367) (3.0,44872) (3.69897,47612) (4.0,50126) (4.69897,49942) (5.0,49861) (5.69897,51444) (6.0,44409) };
+    \addlegendentry{pcEnglish};
+    \addplot coordinates { (0.0,0) (0.69897,4572) (1.0,17184) (1.69897,45010) (2.0,46513) (2.69897,47844) (3.0,47524) (3.69897,52276) (4.0,46844) (4.69897,47443) (5.0,44175) (5.69897,43352) (6.0,40963) };
+    \addlegendentry{pcSources};
+    
+  \end{axis}
+\end{tikzpicture}</text>
+<text layer="gamma" matrix="1 0 0 1 0 16" transformations="translations" pos="0 384" stroke="black" type="minipage" width="832" height="209.012" depth="197.25" valign="top">\begin{tikzpicture}
+  \begin{axis}[
+    xlabel={Query length $\ell$},
+    ylabel={Query time ($n = 10^7$, ms)},
+    ymin=0,ymax=40000,
+    xmin=1,xmax=20,
+    legend pos=south east,
+    %log ticks with fixed point,
+    xtick={1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20},
+    ]
+
+    %% MULTIPLOT(inputType) SELECT queryLength AS x, queryTime AS y, MULTIPLOT
+    %% FROM query GROUP BY MULTIPLOT,x ORDER BY MULTIPLOT,x
+    \addplot coordinates { (1,0) (2,31) (3,437) (4,1769) (5,3715) (6,6520) (7,10270) (8,12506) (9,14813) (10,19321) (11,23081) (12,23405) (13,25390) (14,25822) (15,27265) (16,28502) (17,29503) (18,31373) (19,32023) (20,33060) };
+    \addlegendentry{pcSources};
+    
+  \end{axis}
+\end{tikzpicture}</text>
+<text layer="alpha" transformations="translations" pos="640 384" stroke="black" type="minipage" width="256" height="191.088" depth="179.316" valign="top" style="itemize">\item Anfragezeiten wachsen für kleine Patternlängen\dots
+\item ... bis Plateau erreicht wird.
+\item Mit höherer Länge müssen mehr innere Knoten eingesammelt werden,
+\item Aber irgendwann lässt der Effekt nach, man hat schon fast alle</text>
+<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5463" depth="0" valign="top" size="veryTiny">{\bf 4}</text>
 </page>
 <page title="Repeat Queries">
 <layer name="alpha"/>
 <layer name="pagenumbers_page" edit="no"/>
 <layer name="string"/>
 <layer name="labels"/>
+<layer name="innerNodes"/>
+<layer name="suffixList"/>
+<layer name="result"/>
 <view layers="alpha pagenumbers_page string" active="alpha"/>
+<view layers="alpha pagenumbers_page string labels" active="alpha"/>
+<view layers="alpha pagenumbers_page string labels innerNodes" active="suffixList"/>
+<view layers="alpha pagenumbers_page string labels innerNodes suffixList" active="result"/>
+<view layers="alpha pagenumbers_page string labels innerNodes suffixList result" active="labels"/>
 <path layer="alpha" matrix="1 0 0 1 -16 0" stroke="KITblack70" pen="3">
 684 208 m
 608 84 l
@@ -4126,7 +4418,7 @@ h
 <use matrix="1 0 0 1 24 16" name="mark/fdisk(sfx)" pos="644 192" size="normal" stroke="black" fill="white"/>
 <use matrix="1 0 0 1 8 -4" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="black" fill="white"/>
 <use matrix="1 0 0 1 36 8" name="mark/fdisk(sfx)" pos="660 80" size="normal" stroke="black" fill="white"/>
-<text matrix="1 0 0 1 8 20" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
+<text matrix="1 0 0 1 -8 4" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
 <text matrix="1 0 0 1 20 -36" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="6.9636" depth="0.196" valign="baseline" size="tiny">a</text>
 <text matrix="1 0 0 1 -64 -96" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
 <text matrix="1 0 0 1 -72 -152" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
@@ -4139,7 +4431,7 @@ h
 <text matrix="1 0 0 1 144 -184" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
 <text matrix="1 0 0 1 180 -236" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
 <text matrix="1 0 0 1 236 -252" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
-<text matrix="1 0 0 1 -16 -4" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text layer="labels" matrix="1 0 0 1 -16 -4" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
 <text matrix="1 0 0 1 -16 -20" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
 <text matrix="1 0 0 1 252 362" transformations="translations" pos="528 48" stroke="KITgreen" type="label" width="93.5154" height="13.387" depth="4.026" valign="baseline" size="small">String-Tiefe</text>
 <text matrix="1 0 0 1 -88 108" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
@@ -4152,7 +4444,7 @@ h
 <text matrix="1 0 0 1 44 12" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">6</text>
 <text matrix="1 0 0 1 164 -36" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
 <text matrix="1 0 0 1 164 -52" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.463" depth="0.286" valign="baseline" size="small">5</text>
-<text transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Annotiere jeden Knoten mit String-Tiefe und möglichem Suffix
+<text layer="alpha" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.5993" depth="21.413" valign="top" style="item">Annotiere jeden Knoten mit String-Tiefe und repräsentiertem Suffix
 </text>
 <text layer="string" matrix="1 0 0 1 -178 52" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
 <text matrix="1 0 0 1 -158 52" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
@@ -4215,11 +4507,167 @@ h
 636 352 m
 452 352 l
 </path>
-<text layer="alpha" matrix="1 0 0 1 252 342" transformations="translations" pos="528 48" stroke="KITlilac" type="label" width="45.3882" height="13.3892" depth="0.286" valign="baseline" size="small">Suffix</text>
-<text matrix="1 0 0 1 0 -68" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Sammle innere Knoten, absteigend sortiert nach String-Tiefe</text>
+<text layer="labels" matrix="1 0 0 1 252 342" transformations="translations" pos="528 48" stroke="KITlilac" type="label" width="45.3882" height="13.3892" depth="0.286" valign="baseline" size="small">Suffix</text>
+<text layer="alpha" matrix="1 0 0 1 0 -68" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Sammle innere Knoten, absteigend sortiert nach String-Tiefe</text>
 <text matrix="1 0 0 1 0 -140" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="18.8062" depth="6.5905" valign="top" style="item">Für jeden inneren Knoten $v$:</text>
 <text matrix="1 0 0 1 20 -176" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="31.4433" depth="19.257" valign="top" style="item">Sammle sortierte Liste aller Suffixe unter dem Knoten</text>
 <text matrix="1 0 0 1 20 -240" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Falls es zwei Suffixe gibt mit Differenz der String-Tiefe von $v$: Gebe Ergebnis aus</text>
-<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5463" depth="0" valign="top" size="veryTiny">{\bf 4}</text>
+<text layer="innerNodes" transformations="translations" pos="512 32" stroke="black" type="label" width="147.306" height="16.2264" depth="0.3675" valign="baseline">Innere Knoten:</text>
+<text matrix="1 0 0 1 -20 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 0 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
+<text matrix="1 0 0 1 20 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 40 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 60 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 80 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<text layer="labels" matrix="1 0 0 1 -168 128" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">8</text>
+<text matrix="1 0 0 1 -176 20" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.4498" depth="0" valign="baseline" size="small">7</text>
+<text matrix="1 0 0 1 -112 -44" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
+<text matrix="1 0 0 1 -92 -148" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 12 -144" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<text matrix="1 0 0 1 44 -100" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">6</text>
+<text matrix="1 0 0 1 84 -84" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">2</text>
+<text matrix="1 0 0 1 112 -124" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.463" depth="0.286" valign="baseline" size="small">5</text>
+<text matrix="1 0 0 1 188 -136" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text layer="suffixList" transformations="translations" pos="512 0" stroke="black" type="label" width="74.2154" height="16.5522" depth="0.3675" valign="baseline">Suffixe:</text>
+<text matrix="1 0 0 1 -92 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -72 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<text layer="result" matrix="1 0 0 1 -56 0" transformations="translations" pos="704 0" stroke="black" type="label" width="125.504" height="16.2215" depth="4.998" valign="baseline">$\rightarrow$ Ergebnis:</text>
+<text transformations="translations" pos="784 0" stroke="black" type="label" width="50.2373" height="16.4052" depth="4.6795" valign="baseline" style="math">(0, 8)</text>
+<path layer="suffixList" stroke="KITorange" pen="5" arrow="normal/small (10 pt)">
+620 228 m
+656 212 l
+</path>
+<path stroke="KITorange" pen="5" arrow="normal/small (10 pt)">
+676 80 m
+676 52 l
+</path>
+<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.3692" depth="0.184" valign="top" size="veryTiny">{\bf 5}</text>
+</page>
+<page title="Suffixe einsammeln als DP">
+<layer name="alpha"/>
+<layer name="pagenumbers_page" edit="no"/>
+<layer name="suffix-initial"/>
+<layer name="beta"/>
+<layer name="trivialSuffixes"/>
+<layer name="result"/>
+<layer name="gamma"/>
+<layer name="delta"/>
+<layer name="epsilon"/>
+<view layers="alpha pagenumbers_page gamma delta epsilon" active="delta"/>
+<view layers="alpha pagenumbers_page trivialSuffixes delta epsilon" active="result"/>
+<view layers="alpha pagenumbers_page suffix-initial trivialSuffixes epsilon" active="beta"/>
+<view layers="alpha pagenumbers_page beta trivialSuffixes epsilon" active="result"/>
+<view layers="alpha pagenumbers_page beta trivialSuffixes result" active="result"/>
+<path layer="alpha" matrix="1 0 0 1 84 4" stroke="KITblack70" pen="3">
+684 208 m
+608 84 l
+</path>
+<use matrix="1 0 0 1 104 0" name="mark/fdisk(sfx)" pos="588 88" size="normal" stroke="black" fill="white"/>
+<text matrix="1 0 0 1 84 -232" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
+<path matrix="1 0 0 1 84 4" stroke="KITblack70" pen="3">
+608 188 m
+640 304 l
+684 208 l
+</path>
+<path matrix="1 0 0 1 84 4" stroke="KITblack70" pen="3">
+640 304 m
+544 256 l
+544 256 l
+</path>
+<path matrix="1 0 0 1 84 20" stroke="KITblack70" pen="3">
+712 72 m
+684 192 l
+</path>
+<use matrix="1 0 0 1 84 20" name="mark/fdisk(sfx)" pos="640 288" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 84 20" name="mark/fdisk(sfx)" pos="544 240" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 124 20" name="mark/fdisk(sfx)" pos="644 192" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 108 0" name="mark/fdisk(sfx)" pos="584 192" size="normal" stroke="black" fill="white"/>
+<use matrix="1 0 0 1 136 12" name="mark/fdisk(sfx)" pos="660 80" size="normal" stroke="black" fill="white"/>
+<text matrix="1 0 0 1 36 -92" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="7.1344" height="9.9652" depth="1.456" valign="baseline" size="tiny">\$</text>
+<text matrix="1 0 0 1 28 -148" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 116 -120" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="21.2744" height="9.2876" depth="0.196" valign="baseline" size="tiny">bba</text>
+<text matrix="1 0 0 1 112 -252" transformations="translations" pos="632 384" stroke="KITblack70" type="label" width="35.5432" height="9.9652" depth="1.456" valign="baseline" size="tiny">abba\$</text>
+<text matrix="1 0 0 1 88 4" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text layer="suffix-initial" matrix="1 0 0 1 84 -16" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="10.0892" height="13.112" depth="0" valign="baseline" size="small">?</text>
+<text layer="trivialSuffixes" matrix="1 0 0 1 -76 24" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="10.0892" height="12.4498" depth="0" valign="baseline" size="small">7</text>
+<text matrix="1 0 0 1 -16 -40" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
+<text matrix="1 0 0 1 8 -144" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 112 -140" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<path layer="alpha" stroke="KITorange" pen="5" arrow="normal/small (10 pt)">
+768 328 m
+736 312 l
+</path>
+<text matrix="1 0 0 1 20 124" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
+<text matrix="1 0 0 1 252 362" transformations="translations" pos="528 48" stroke="KITgreen" type="label" width="93.5154" height="13.387" depth="4.026" valign="baseline" size="small">String-Tiefe</text>
+<text matrix="1 0 0 1 252 342" transformations="translations" pos="528 48" stroke="KITseablue" type="label" width="89.7578" height="13.3892" depth="0.286" valign="baseline" size="small">Suffix-Liste</text>
+<text transformations="translations" pos="0 384" stroke="black" type="minipage" width="592" height="31.507" depth="19.3305" valign="top">\textbf{Ziel:} Berechne sortierte Liste aller Suffixe unter einem Knoten
+$\rightarrow$ Merge dazu alle Kinderlisten</text>
+<text matrix="1 0 0 1 48 -132.757" transformations="translations" pos="0 336" stroke="black" type="minipage" width="472" height="48.1523" depth="36.015" valign="top" style="item">\textbf{Beobachtung:} Alle Kinder haben höhere String-Tiefe 
+
+$\rightarrow$ Liste schon berechnet</text>
+<text matrix="1 0 0 1 0 -17.188" transformations="translations" pos="0 336" stroke="black" type="minipage" width="496" height="18.9606" depth="6.762" valign="top" style="item">Es gibt zwei Fälle:</text>
+<text matrix="1 0 0 1 24 -57.2611" transformations="translations" pos="0 336" stroke="black" type="minipage" width="496" height="18.9483" depth="6.762" valign="top" style="item">Kind ist Blatt $\rightarrow$ triviale einelementige Liste</text>
+<text matrix="1 0 0 1 24 -97.3219" transformations="translations" pos="0 336" stroke="black" type="minipage" width="496" height="16.6502" depth="4.4345" valign="top" style="item">Kind ist innerer Knoten.</text>
+<text matrix="1 0 0 1 0 -231.275" transformations="translations" pos="0 336" stroke="black" type="minipage" width="496" height="31.289" depth="19.0855" valign="top" style="item">Merge die vorberechneten sortierten Listen aller Kinder</text>
+<text matrix="1 0 0 1 0 -296" transformations="translations" pos="0 336" stroke="black" type="minipage" width="496" height="18.8062" depth="6.5905" valign="top" style="item">Implementiert als DP.</text>
+<text layer="beta" matrix="1 0 0 1 84 -16" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="48.8774" height="14.7972" depth="4.928" valign="baseline" size="small" style="math">\{0,4\}</text>
+<text layer="result" matrix="1 0 0 1 -52 104" transformations="translations" pos="692 216" stroke="KITseablue" type="label" width="85.9056" height="14.7972" depth="4.928" valign="baseline" size="small" style="math">\{0,3,4,7\}</text>
+<path layer="gamma" fill="white" opacity="70%" stroke-opacity="opaque">
+0 320 m
+0 248 l
+496 248 l
+496 320 l
+h
+</path>
+<path layer="delta" fill="white" opacity="70%" stroke-opacity="opaque">
+0 244 m
+0 112 l
+496 112 l
+496 244 l
+h
+</path>
+<path layer="epsilon" fill="white" opacity="70%" stroke-opacity="opaque">
+0 108 m
+0 0 l
+496 0 l
+496 108 l
+h
+</path>
+<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5578" depth="0.184" valign="top" size="veryTiny">{\bf 6}</text>
+</page>
+<page title="Repeat Query Performance">
+<layer name="alpha"/>
+<layer name="pagenumbers_page" edit="no"/>
+<view layers="alpha pagenumbers_page" active="alpha"/>
+<text layer="alpha" matrix="1 0 0 1 0 16" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="210.649" depth="198.891" valign="top">\begin{tikzpicture}
+  \begin{axis}[
+    xlabel={Input length (\#char)},
+    ylabel={Repeat query time (ms)},
+    ymin=0,ymax=100000,
+    xmin=0,xmax=10000000,
+    %log ticks with fixed point,
+    xtick={1000, 1000000, 2500000, 5000000, 7500000, 10000000},
+    ]
+
+    %% MULTIPLOT(inputType) SELECT inputLength AS x, queryTime AS y, MULTIPLOT
+    %% FROM query GROUP BY MULTIPLOT,x ORDER BY MULTIPLOT,x
+    \addplot coordinates { (1000,2) (1000000,4427) (2500000,12950) (5000000,28482) (7500000,44492) (10000000,61992) };
+    \addlegendentry{pcDNA};
+    \addplot coordinates { (1000,3) (1000000,4455) (2500000,11944) (5000000,34386) (7500000,68130) (10000000,96558) };
+    \addlegendentry{pcEnglish};
+    \addplot coordinates { (1000,2) (1000000,6422) (2500000,15568) (5000000,33968) (7500000,52438) (10000000,76640) };
+    \addlegendentry{pcSources};
+    
+  \end{axis}
+\end{tikzpicture}</text>
+<text transformations="translations" pos="640 384" stroke="black" type="minipage" width="256" height="79.8112" depth="67.7425" valign="top" style="itemize">\item Query-Performance wieder linear in Eingabelänge
+\item Wieder: repetitivere Texte einfacher</text>
+<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.3577" depth="0" valign="top" size="veryTiny">{\bf 7}</text>
+</page>
+<page>
+<layer name="alpha"/>
+<layer name="pagenumbers_page" edit="no"/>
+<view layers="alpha pagenumbers_page" active="alpha"/>
+<text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5578" depth="0.184" valign="top" size="veryTiny">{\bf 8}</text>
 </page>
 </ipe>

@@ -1,0 +1,7 @@
+Requested repeatQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=2 inputType=pcEnglish inputLength=1000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=24 inputType=pcEnglish inputLength=10000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=325 inputType=pcEnglish inputLength=100000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=4461 inputType=pcEnglish inputLength=1000000 file=../EvaluationFiles/english-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=93349 inputType=pcEnglish inputLength=10000000 file=../EvaluationFiles/english-50MB.txt

@@ -1,0 +1,8 @@
+Requested preprocessing experiment.
+Original input has length 52428801
+RESULT algo=preprocessingExperiment constructionTime=0 inputType=pcSources inputLength=1000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=4 inputType=pcSources inputLength=10000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=45 inputType=pcSources inputLength=100000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=508 inputType=pcSources inputLength=1000000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=6087 inputType=pcSources inputLength=10000000 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=preprocessingExperiment constructionTime=13765 inputType=pcSources inputLength=20000000 file=../EvaluationFiles/sources-50MB.txt

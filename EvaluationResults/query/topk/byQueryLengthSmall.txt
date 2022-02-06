@@ -1,0 +1,23 @@
+Requested topKQuery experiment.
+Original input has length 52428801
+RESULT algo=topKQueryExperiment queryTime=0 inputType=pcSources inputLength=10000000 queryLength=1 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=31 inputType=pcSources inputLength=10000000 queryLength=2 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=437 inputType=pcSources inputLength=10000000 queryLength=3 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=1769 inputType=pcSources inputLength=10000000 queryLength=4 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=3715 inputType=pcSources inputLength=10000000 queryLength=5 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=6520 inputType=pcSources inputLength=10000000 queryLength=6 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=10270 inputType=pcSources inputLength=10000000 queryLength=7 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=12506 inputType=pcSources inputLength=10000000 queryLength=8 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=14813 inputType=pcSources inputLength=10000000 queryLength=9 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=19321 inputType=pcSources inputLength=10000000 queryLength=10 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=23081 inputType=pcSources inputLength=10000000 queryLength=11 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=23405 inputType=pcSources inputLength=10000000 queryLength=12 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=25390 inputType=pcSources inputLength=10000000 queryLength=13 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=25822 inputType=pcSources inputLength=10000000 queryLength=14 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=27265 inputType=pcSources inputLength=10000000 queryLength=15 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=28502 inputType=pcSources inputLength=10000000 queryLength=16 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=29503 inputType=pcSources inputLength=10000000 queryLength=17 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=31373 inputType=pcSources inputLength=10000000 queryLength=18 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=32023 inputType=pcSources inputLength=10000000 queryLength=19 file=../EvaluationFiles/sources-50MB.txt
+RESULT algo=topKQueryExperiment queryTime=33060 inputType=pcSources inputLength=10000000 queryLength=20 file=../EvaluationFiles/sources-50MB.txt
+
