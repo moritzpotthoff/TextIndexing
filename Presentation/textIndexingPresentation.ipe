@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.21">
-<info created="D:20090429144355" modified="D:20220206211057" title="Textindexierung Programmierprojekt" author="Moritz Potthoff"/>
+<info created="D:20090429144355" modified="D:20220206231023" title="Textindexierung Programmierprojekt" author="Moritz Potthoff"/>
 <preamble>\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -4295,7 +4295,7 @@ h
 <layer name="gamma"/>
 <view layers="alpha pagenumbers_page gamma" active="gamma"/>
 <view layers="alpha pagenumbers_page beta" active="gamma"/>
-<text layer="beta" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="209.742" depth="197.985" valign="top">\begin{tikzpicture}
+<text layer="beta" matrix="1 0 0 1 0 16" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="209.742" depth="197.985" valign="top">\begin{tikzpicture}
   \begin{axis}[
     xlabel={Query length $\log_{10}(\ell)$},
     ylabel={Query time ($n = 10^7$, ms)},
@@ -4444,7 +4444,7 @@ h
 <text matrix="1 0 0 1 44 12" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">6</text>
 <text matrix="1 0 0 1 164 -36" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
 <text matrix="1 0 0 1 164 -52" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.463" depth="0.286" valign="baseline" size="small">5</text>
-<text layer="alpha" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.5993" depth="21.413" valign="top" style="item">Annotiere jeden Knoten mit String-Tiefe und repräsentiertem Suffix
+<text layer="alpha" matrix="1 0 0 1 0 -96" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.5993" depth="21.413" valign="top" style="item">Annotiere jeden Knoten mit String-Tiefe und repräsentiertem Suffix
 </text>
 <text layer="string" matrix="1 0 0 1 -178 52" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="9.8406" depth="0.286" halign="center" valign="baseline" size="small">a</text>
 <text matrix="1 0 0 1 -158 52" transformations="translations" pos="632 384" stroke="KITblack" type="label" width="10.0892" height="13.1252" depth="0.286" halign="center" valign="baseline" size="small">b</text>
@@ -4508,10 +4508,10 @@ h
 452 352 l
 </path>
 <text layer="labels" matrix="1 0 0 1 252 342" transformations="translations" pos="528 48" stroke="KITlilac" type="label" width="45.3882" height="13.3892" depth="0.286" valign="baseline" size="small">Suffix</text>
-<text layer="alpha" matrix="1 0 0 1 0 -68" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Sammle innere Knoten, absteigend sortiert nach String-Tiefe</text>
-<text matrix="1 0 0 1 0 -140" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="18.8062" depth="6.5905" valign="top" style="item">Für jeden inneren Knoten $v$:</text>
-<text matrix="1 0 0 1 20 -176" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="31.4433" depth="19.257" valign="top" style="item">Sammle sortierte Liste aller Suffixe unter dem Knoten</text>
-<text matrix="1 0 0 1 20 -240" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Falls es zwei Suffixe gibt mit Differenz der String-Tiefe von $v$: Gebe Ergebnis aus</text>
+<text layer="alpha" matrix="1 0 0 1 0 -164" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Sammle innere Knoten, absteigend sortiert nach String-Tiefe</text>
+<text matrix="1 0 0 1 0 -236" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="18.8062" depth="6.5905" valign="top" style="item">Für jeden inneren Knoten $v$:</text>
+<text matrix="1 0 0 1 20 -272" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="31.4433" depth="19.257" valign="top" style="item">Sammle sortierte Liste aller Suffixe unter dem Knoten</text>
+<text matrix="1 0 0 1 20 -336" transformations="translations" pos="0 384" stroke="black" type="minipage" width="448" height="33.7439" depth="21.5845" valign="top" style="item">Falls es zwei Suffixe gibt mit Differenz der String-Tiefe von $v$: Gebe Ergebnis aus</text>
 <text layer="innerNodes" transformations="translations" pos="512 32" stroke="black" type="label" width="147.306" height="16.2264" depth="0.3675" valign="baseline">Innere Knoten:</text>
 <text matrix="1 0 0 1 -20 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
 <text matrix="1 0 0 1 0 -184" transformations="translations" pos="692 216" stroke="KITgreen" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">3</text>
@@ -4529,8 +4529,8 @@ h
 <text matrix="1 0 0 1 112 -124" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.463" depth="0.286" valign="baseline" size="small">5</text>
 <text matrix="1 0 0 1 188 -136" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">1</text>
 <text layer="suffixList" transformations="translations" pos="512 0" stroke="black" type="label" width="74.2154" height="16.5522" depth="0.3675" valign="baseline">Suffixe:</text>
-<text matrix="1 0 0 1 -92 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
-<text matrix="1 0 0 1 -72 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
+<text matrix="1 0 0 1 -72 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7842" depth="0" valign="baseline" size="small">4</text>
+<text matrix="1 0 0 1 -92 -216" transformations="translations" pos="692 216" stroke="KITlilac" type="label" width="10.0892" height="12.7974" depth="0.286" valign="baseline" size="small">0</text>
 <text layer="result" matrix="1 0 0 1 -56 0" transformations="translations" pos="704 0" stroke="black" type="label" width="125.504" height="16.2215" depth="4.998" valign="baseline">$\rightarrow$ Ergebnis:</text>
 <text transformations="translations" pos="784 0" stroke="black" type="label" width="50.2373" height="16.4052" depth="4.6795" valign="baseline" style="math">(0, 8)</text>
 <path layer="suffixList" stroke="KITorange" pen="5" arrow="normal/small (10 pt)">
@@ -4541,6 +4541,8 @@ h
 676 80 m
 676 52 l
 </path>
+<text layer="alpha" transformations="translations" pos="0 384" stroke="black" type="minipage" width="480" height="44.0265" depth="31.8745" valign="top">\textbf{Idee:} Suche inneren Knoten mit String-Tiefe $\ell$, der zwei Suffixe unter sich hat, die genau \\Differenz $\ell$ haben
+</text>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.3692" depth="0.184" valign="top" size="veryTiny">{\bf 5}</text>
 </page>
 <page title="Suffixe einsammeln als DP">
@@ -4664,10 +4666,17 @@ h
 \item Wieder: repetitivere Texte einfacher</text>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.3577" depth="0" valign="top" size="veryTiny">{\bf 7}</text>
 </page>
-<page>
+<page title="Erkenntnisse">
 <layer name="alpha"/>
 <layer name="pagenumbers_page" edit="no"/>
+<layer name="beta"/>
 <view layers="alpha pagenumbers_page" active="alpha"/>
+<view layers="alpha pagenumbers_page beta" active="beta"/>
+<text layer="alpha" transformations="translations" pos="0 384" stroke="black" type="minipage" width="896" height="76.2906" depth="64.239" valign="top" style="itemize">\item Automatisierte Tests lohnen sich
+\item Schon während dem Tuning automatisiert evaluieren!
+\item Tuning nicht so leicht, wenn nicht klar ist, wie die Eingaben verteilt sind
+\item Was anderso gut funktioniert, muss nicht auch hier funktionieren: Vorberechnung</text>
+<text layer="beta" matrix="-0.493264 0 0 2.25222 670.496 -425.049" transformations="translations" pos="448 256" stroke="black" type="label" width="204.984" height="40.3515" depth="12.446" halign="center" valign="center">\Huge Fragen?</text>
 <text layer="pagenumbers_page" matrix="1 0 0 1 13 6.058" transformations="translations" pos="-13 -35" stroke="black" type="label" width="5.8604" height="7.5578" depth="0.184" valign="top" size="veryTiny">{\bf 8}</text>
 </page>
 </ipe>
